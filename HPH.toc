@@ -1,8 +1,8 @@
 ## Interface: 11305
-## Author: Ryts
-## Version: 2.15
+## Author: Ryts, Davitosan
+## Version: 2.20
 ## Title: HPH
-## Notes: v2.15
+## Notes: Honor Per Hour Tracking. v2.20
 ## SavedVariablesPerCharacter: hph_killsdb, hph_today, hph_week, hph_options
 
 Libs\LibStub\LibStub.lua
@@ -12,6 +12,7 @@ Libs\AceAddon-3.0\AceAddon-3.0.xml
 Libs\AceEvent-3.0\AceEvent-3.0.xml
 Libs\AceGUI-3.0\AceGUI-3.0.xml
 Libs\AceConfig-3.0\AceConfig-3.0.xml
+Libs\AceTimer-3.0\AceTimer-3.0.xml
 
 HPH.lua
 
