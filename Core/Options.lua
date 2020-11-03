@@ -211,7 +211,7 @@ local function GetOptionsTable()
 					chatsystemhonor = {
 						order = 3,
 						type = "toggle",
-						name = "Supress System Honor Gain Message",
+						name = "Suppress System Honor Gain Message",
 						desc = "Hides system messages related to Honor Gain",
 						width = "full",
 						get = function(info) return HPH.GetOption("chat_system_honor") end,
