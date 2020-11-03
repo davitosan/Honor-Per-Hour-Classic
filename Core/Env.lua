@@ -33,4 +33,5 @@ HPH.honor_session = 0
 HPH.honorSumNom = 0
 HPH.honorSumReal = 0
 HPH.killsInFight = 0
+HPH.defaultColor = "|cfffffb00"
 HPH.optionsFrames = {}

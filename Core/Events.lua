@@ -86,7 +86,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 					}
 				HPH.honor_today = HPH.honor_today + honor_nominal
 				HPH.honor_session = HPH.honor_session + honor_nominal
-				msg = "|cfffffb00+honor - " .. honor_nominal .. "|r (|cff0099ffBG|r|cfffffb00)"
+				msg = HPH.defaultColor .. "+honor - " .. honor_nominal .. "|r (|cff0099ffBG" .. HPH.defaultColor .. ")"
 			else
 				hph_killsdb[getn(hph_killsdb) + 1] = {
 					name,
@@ -104,17 +104,17 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 				end
 				if optChatType ~= "None" then
 					local victimname = name
-					local server = "|cfffffb00-"
+					local server = HPH.defaultColor .. "-"
 					if string.match(name, "-") then
 						victimname, victimserver = name:match("([^,]+)-([^,]+)")
-						server = "|cfffffb00-" .. victimserver .. "|r | |cfffffb00"
+						server = HPH.defaultColor .. "-" .. victimserver .. "|r | " .. HPH.defaultColor
 					end
 					if optChatType == "VerboseColored" then
-						msg = "|c" .. sourceHex .. victimname .. server .. rankOutput .. "|r | |cfffffb00Kills: |r" .. discountHex .. timesKilled + 1 .. "|r | |cfffffb00Honor: " .. discountHex .. math.floor(honor_real) .. "|cfffffb00 (|r" .. discountHex .. coef * 100 .. "%|r|cfffffb00)|r"
+						msg = "|c" .. sourceHex .. victimname .. server .. rankOutput .. "|r | " .. HPH.defaultColor .. "Kills: |r" .. discountHex .. timesKilled + 1 .. "|r | " .. HPH.defaultColor .. "Honor: " .. discountHex .. math.floor(honor_real) .. HPH.defaultColor .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. HPH.defaultColor .. ")|r"
 					elseif optChatType == "Verbose" then
-						msg = "|cfffffb00" .. victimname .. server .. rankOutput .. " | Kills: " .. timesKilled + 1 .. " | Honor: " .. math.floor(honor_real) .. " (" .. coef * 100 .. "%)"
+						msg = HPH.defaultColor .. victimname .. server .. rankOutput .. " | Kills: " .. timesKilled + 1 .. " | Honor: " .. math.floor(honor_real) .. " (" .. coef * 100 .. "%)"
 					elseif optChatType == "Compact" then
-						msg = "|cfffffb00+honor - " .. honor_real .. " of " .. honor_nominal .. " (|r" .. discountHex .. coef * 100 .. "%|r|cfffffb00)|r"
+						msg = HPH.defaultColor .. "+honor - " .. honor_real .. " of " .. honor_nominal .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. HPH.defaultColor .. ")|r"
 					end
 				end
 			end

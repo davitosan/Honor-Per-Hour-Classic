@@ -149,7 +149,7 @@ HPH.GetDiscountRate = GetDiscountRate
 -- Get Rank Color
 local rankColors = 
 {
-	"fffffb00", --Rank 0 fffb00
+	HPH.defaultColor, --Rank 0 (Unknown) fffb00
 	"ff8ea18d", --Rank 1 8ea18d HSV 117°, 12%, 63%
 	"ff8aa888", --Rank 2 8aa888 HSV 117°, 19%, 66%
 	"ff84b082", --Rank 3 84b082 HSV 117°, 26%, 69%
@@ -204,12 +204,12 @@ local function GetHPHRankOutput(rank)
 		rankIndex = 0
 	end
 
-	local rankColor = "|cfffffb00"
+	local rankColor = HPH.defaultColor
 	if(opt == "VerboseColored") then
 		rankColor = "|c" .. rankColors[rankIndex + 1]
 	end
 
-	return rankLabel .. rankColor .. " " .. rank .. " |cfffffb00(" .. rankColor .. rankIndex .. "|cfffffb00)"
+	return rankLabel .. rankColor .. " " .. rank .. " " .. HPH.defaultColor .. "(" .. rankColor .. rankIndex .. HPH.defaultColor.. ")"
 end
 HPH.GetHPHRankOutput = GetHPHRankOutput
 
