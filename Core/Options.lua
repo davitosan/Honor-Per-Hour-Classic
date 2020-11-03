@@ -1,6 +1,13 @@
 local HPH = LibStub("AceAddon-3.0"):GetAddon("HPH")
 local SM = LibStub:GetLibrary("LibSharedMedia-3.0")
 local fonts = SM:List("font")
+local printTypes = 
+{
+	"None",
+	"Compact",
+	"Verbose",
+	"VerboseColored",
+}
 
 local function GetOptionsTable()
 	local optionsTbl = {
@@ -173,8 +180,42 @@ local function GetOptionsTable()
 				type = "group",
 				order = 3,
 				args = {
-					chatcombat = {
+					chatsytemcolor = {
 						order = 1,
+						type = "color",
+						name = "Message Color",
+						desc = "..",
+						width = "full",
+						hasAlpha = false,
+						get = function(info)
+							return HPH.GetOption("chat_message_color_r"), HPH.GetOption("chat_message_color_g"), HPH.GetOption("chat_message_color_b")
+						end,
+						set = function(info, r, g, b, a)
+							hph_options["chat_message_color_r"] = r
+							hph_options["chat_message_color_g"] = g
+							hph_options["chat_message_color_r"] = b
+							HPH.systemColor = "|c" .. HPH.RGBToHex(r, g, b)
+						end,				
+					},
+					chatsystemtype = {
+						order = 2,
+						type = "select",
+						name = "Chat Type",
+						desc = "...",
+						values = printTypes,
+						get = function()
+							for info, value in next, printTypes do
+								if value == HPH.GetOption("chat_system_type") then
+									return info
+								end
+							end
+						end, 
+						set = function(_, value)
+							hph_options["chat_system_type"] = printTypes[value]
+						end,
+					},
+					chatcombat = {
+						order = 3,
 						type = "toggle",
 						name = "Print Combat Summary",
 						desc = "...",
@@ -183,18 +224,18 @@ local function GetOptionsTable()
 						set = function(info, value) 
 							hph_options["chat_combat"] = not HPH.GetOption("chat_combat")	
 						end,
-					},		
-					chathonor = {
-						order = 2,
+					},
+					chatsystemhonor = {
+						order = 4,
 						type = "toggle",
-						name = "Print Honor Message",
-						desc = "...",
+						name = "Suppress System Honor Gain Message",
+						desc = "Hides system messages related to Honor Gain",
 						width = "full",
-						get = function(info) return HPH.GetOption("chat_honor") end,
+						get = function(info) return HPH.GetOption("chat_system_honor") end,
 						set = function(info, value) 
-							hph_options["chat_honor"] = not HPH.GetOption("chat_honor")	
+							hph_options["chat_system_honor"] = not HPH.GetOption("chat_system_honor")	
 						end,
-					},		
+					},			
 				}, 	
 			},
 			Honortab = {
