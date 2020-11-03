@@ -1,0 +1,26 @@
+## Interface: 11305
+## Author: Ryts
+## Version: 2.15
+## Title: HPH
+## Notes: v2.15
+## SavedVariablesPerCharacter: hph_killsdb, hph_today, hph_week, hph_options
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\LibSharedMedia-3.0\lib.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceConfig-3.0\AceConfig-3.0.xml
+
+HPH.lua
+
+Core/Functions.lua
+Core/Queries.lua
+Core/Env.lua
+Core/Frame.lua
+Core/Tooltip.lua
+Core/HonorFrame.lua
+Core/Events.lua
+Core/Cmd.lua
+Core/Options.lua
