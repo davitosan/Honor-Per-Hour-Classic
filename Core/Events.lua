@@ -3,7 +3,6 @@ local SM = LibStub:GetLibrary("LibSharedMedia-3.0")
 
 HPH.Events = CreateFrame("Frame","BCTEvents",UIParent)
 
-HPH.Events:RegisterEvent("VARIABLES_LOADED")
 HPH.Events:RegisterEvent("PLAYER_LOGIN")
 HPH.Events:RegisterEvent("PLAYER_REGEN_DISABLED")
 HPH.Events:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -13,19 +12,6 @@ HPH.Events:RegisterEvent("CHAT_MSG_COMBAT_HONOR_GAIN")
 ChatFrame_AddMessageEventFilter("CHAT_MSG_COMBAT_HONOR_GAIN", HPH.myChatFilter)
 
 HPH.Events:SetScript("OnEvent", function(self, event, ...)
-	if event == "VARIABLES_LOADED" then
-		--Set default to true for 'chat_system_honor'
-		if ( not HPH.GetOption("chat_system_honor") ) then 
-	 		hph_options["chat_system_honor"] = true
-	 	end
-
-	 	--Set default to true for 'chat_system_type'
-	 	if( not HPH.GetOption("chat_system_type") ) then
-	 		hph_options["chat_system_type"] = "VerboseColored"
-	 	end
-
-	 	return
-	end
 	if event == "PLAYER_LOGIN" then
 		HPH.SetToday()
 		HPH.PurgeKillDB()
@@ -86,7 +72,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 					}
 				HPH.honor_today = HPH.honor_today + honor_nominal
 				HPH.honor_session = HPH.honor_session + honor_nominal
-				msg = HPH.defaultColor .. "+honor - " .. honor_nominal .. "|r (|cff0099ffBG" .. HPH.defaultColor .. ")"
+				msg = HPH.systemColor .. "+honor - " .. honor_nominal .. "|r (|cff0099ffBG" .. HPH.systemColor .. ")"
 			else
 				hph_killsdb[getn(hph_killsdb) + 1] = {
 					name,
@@ -104,17 +90,17 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 				end
 				if optChatType ~= "None" then
 					local victimname = name
-					local server = HPH.defaultColor .. "-"
+					local server = HPH.systemColor .. "-"
 					if string.match(name, "-") then
 						victimname, victimserver = name:match("([^,]+)-([^,]+)")
-						server = HPH.defaultColor .. "-" .. victimserver .. "|r | " .. HPH.defaultColor
+						server = HPH.systemColor .. "-" .. victimserver .. "|r | " .. HPH.systemColor
 					end
 					if optChatType == "VerboseColored" then
-						msg = "|c" .. sourceHex .. victimname .. server .. rankOutput .. "|r | " .. HPH.defaultColor .. "Kills: |r" .. discountHex .. timesKilled + 1 .. "|r | " .. HPH.defaultColor .. "Honor: " .. discountHex .. math.floor(honor_real) .. HPH.defaultColor .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. HPH.defaultColor .. ")|r"
+						msg = "|c" .. sourceHex .. victimname .. server .. rankOutput .. "|r | " .. HPH.systemColor .. "Kills: |r" .. discountHex .. timesKilled + 1 .. "|r | " .. HPH.systemColor .. "Honor: " .. discountHex .. math.floor(honor_real) .. HPH.systemColor .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. HPH.systemColor .. ")|r"
 					elseif optChatType == "Verbose" then
-						msg = HPH.defaultColor .. victimname .. server .. rankOutput .. " | Kills: " .. timesKilled + 1 .. " | Honor: " .. math.floor(honor_real) .. " (" .. coef * 100 .. "%)"
+						msg = HPH.systemColor .. victimname .. server .. rankOutput .. " | Kills: " .. timesKilled + 1 .. " | Honor: " .. math.floor(honor_real) .. " (" .. coef * 100 .. "%)"
 					elseif optChatType == "Compact" then
-						msg = HPH.defaultColor .. "+honor - " .. honor_real .. " of " .. honor_nominal .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. HPH.defaultColor .. ")|r"
+						msg = HPH.systemColor .. "+honor - " .. honor_real .. " of " .. honor_nominal .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. HPH.systemColor .. ")|r"
 					end
 				end
 			end

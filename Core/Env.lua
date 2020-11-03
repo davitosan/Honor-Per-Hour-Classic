@@ -14,6 +14,11 @@ hph_options_defaults = {
 	["show"] = true,
 	["font"] = "Expressway",
 	["font_size"] = 13,
+	["chat_system_honor"] = true,
+	["chat_system_type"] = "VerboseColored",
+	["chat_message_color_r"] = 255,
+	["chat_message_color_g"] = 251,
+	["chat_message_color_b"] = 0,
 }
 
 -- Init Character State
@@ -33,5 +38,5 @@ HPH.honor_session = 0
 HPH.honorSumNom = 0
 HPH.honorSumReal = 0
 HPH.killsInFight = 0
-HPH.defaultColor = "|cfffffb00"
+HPH.systemColor = "|cfffffb00"
 HPH.optionsFrames = {}

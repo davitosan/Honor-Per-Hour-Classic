@@ -77,6 +77,25 @@ local function IsTimestampToday(timestamp)
 end
 HPH.IsTimestampToday = IsTimestampToday
 
+--Accepts both types of RGB.
+local function RGBToHex(r, g, b)
+	r = tonumber(r)
+	g = tonumber(g)
+	b = tonumber(b)
+
+	--Check if whole numbers.
+	if (r == math.floor(r) and g == math.floor(g) and b == math.floor(b)
+			and (r > 1 or g > 1 or b > 1)) then
+		r = r <= 255 and r >= 0 and r or 0;
+		g = g <= 255 and g >= 0 and g or 0;
+		b = b <= 255 and b >= 0 and b or 0;
+		return string.format("%02x%02x%02x", r, g, b);
+	else
+		return string.format("%02x%02x%02x", r*255, g*255, b*255);
+	end
+end
+HPH.RGBToHex = RGBToHex
+
 -- Parse Honor Message for nominal honor
 local function GetHonor(inp)
     return tonumber(string.match(inp, "%d+"))
@@ -149,7 +168,7 @@ HPH.GetDiscountRate = GetDiscountRate
 -- Get Rank Color
 local rankColors = 
 {
-	HPH.defaultColor, --Rank 0 (Unknown) fffb00
+	HPH.systemColor, --Rank 0 (Unknown) fffb00
 	"ff8ea18d", --Rank 1 8ea18d HSV 117°, 12%, 63%
 	"ff8aa888", --Rank 2 8aa888 HSV 117°, 19%, 66%
 	"ff84b082", --Rank 3 84b082 HSV 117°, 26%, 69%
@@ -204,12 +223,12 @@ local function GetHPHRankOutput(rank)
 		rankIndex = 0
 	end
 
-	local rankColor = HPH.defaultColor
+	local rankColor = HPH.systemColor
 	if(opt == "VerboseColored") then
 		rankColor = "|c" .. rankColors[rankIndex + 1]
 	end
 
-	return rankLabel .. rankColor .. " " .. rank .. " " .. HPH.defaultColor .. "(" .. rankColor .. rankIndex .. HPH.defaultColor.. ")"
+	return rankLabel .. rankColor .. " " .. rank .. " " .. HPH.systemColor .. "(" .. rankColor .. rankIndex .. HPH.systemColor.. ")"
 end
 HPH.GetHPHRankOutput = GetHPHRankOutput
 

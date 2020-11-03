@@ -180,8 +180,25 @@ local function GetOptionsTable()
 				type = "group",
 				order = 3,
 				args = {
-					chatsystemtype = {
+					chatsytemcolor = {
 						order = 1,
+						type = "color",
+						name = "Message Color",
+						desc = "..",
+						width = "full",
+						hasAlpha = false,
+						get = function(info)
+							return HPH.GetOption("chat_message_color_r"), HPH.GetOption("chat_message_color_g"), HPH.GetOption("chat_message_color_b")
+						end,
+						set = function(info, r, g, b, a)
+							hph_options["chat_message_color_r"] = r
+							hph_options["chat_message_color_g"] = g
+							hph_options["chat_message_color_r"] = b
+							HPH.systemColor = "|c" .. HPH.RGBToHex(r, g, b)
+						end,				
+					},
+					chatsystemtype = {
+						order = 2,
 						type = "select",
 						name = "Chat Type",
 						desc = "...",
@@ -198,7 +215,7 @@ local function GetOptionsTable()
 						end,
 					},
 					chatcombat = {
-						order = 2,
+						order = 3,
 						type = "toggle",
 						name = "Print Combat Summary",
 						desc = "...",
@@ -209,7 +226,7 @@ local function GetOptionsTable()
 						end,
 					},
 					chatsystemhonor = {
-						order = 3,
+						order = 4,
 						type = "toggle",
 						name = "Suppress System Honor Gain Message",
 						desc = "Hides system messages related to Honor Gain",
