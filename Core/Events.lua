@@ -37,7 +37,6 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 			local honor_nominal = HPH.GetHonor(honor_msg)
 			local timesKilled = HPH.GetTimesKilled(name)
 			local discount, discountHex = HPH.GetDiscountRate(timesKilled)
-			local rankOutput = HPH.GetHPHRankOutput(rank)
 			local coef = 1 - discount
 			local honor_real = honor_nominal * coef
 			local optChatType = HPH.GetOption("chat_system_type")
@@ -89,6 +88,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 					HPH.honorSumReal = HPH.honorSumReal + honor_real
 				end
 				if optChatType ~= "None" then
+					local rankOutput = HPH.GetHPHRankOutput(rank)
 					local victimname = name
 					local server = HPH.systemColor .. "-"
 					if string.match(name, "-") then
@@ -100,7 +100,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 					elseif optChatType == "Verbose" then
 						msg = HPH.systemColor .. victimname .. server .. rankOutput .. " | Kills: " .. timesKilled + 1 .. " | Honor: " .. math.floor(honor_real) .. " (" .. coef * 100 .. "%)"
 					elseif optChatType == "Compact" then
-						msg = HPH.systemColor .. "+honor - " .. honor_real .. " of " .. honor_nominal .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. HPH.systemColor .. ")|r"
+						msg = HPH.systemColor .. "+honor - " .. math.floor(honor_real) .. " of " .. honor_nominal .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. HPH.systemColor .. ")|r"
 					end
 				end
 			end
@@ -137,7 +137,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 
 			--Compact
 			if optChatType == "Compact" or optChatType == "None" then
-				print("-Combat ended: " .. HPH.honorSumReal .. " of " .. HPH.honorSumNom .. " (" ..  HPH.killsInFight .. " kills)")
+				print("-Combat ended: " .. math.floor(HPH.honorSumReal) .. " of " .. HPH.honorSumNom .. " (" ..  HPH.killsInFight .. " kills)")
 			
 				return
 			end

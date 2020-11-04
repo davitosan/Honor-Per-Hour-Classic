@@ -169,20 +169,20 @@ HPH.GetDiscountRate = GetDiscountRate
 local rankColors = 
 {
 	HPH.systemColor, --Rank 0 (Unknown) fffb00
-	"ff8ea18d", --Rank 1 8ea18d HSV 117°, 12%, 63%
-	"ff8aa888", --Rank 2 8aa888 HSV 117°, 19%, 66%
-	"ff84b082", --Rank 3 84b082 HSV 117°, 26%, 69%
-	"ff7eb87b", --Rank 4 7eb87b HSV 117°, 33%, 72%
-	"ff77bf73", --Rank 5 77bf73 HSV 117°, 40%, 75%
-	"ff6ec769", --Rank 6 6ec769 HSV 117°, 47%, 78%
-	"ff65cf5f", --Rank 7 65cf5f HSV 118°, 54%, 81%
-	"ff5bd654", --Rank 8 5bd654 HSV 118°, 61%, 84%
-	"ff4fde47", --Rank 9 4fde47 HSV 118°, 68%, 87%
-	"ff42e639", --Rank 10 42e639 HSV 118°, 75%, 90%
-	"ff34ed2b", --Rank 11 34ed2b HSV 118°, 82%, 93%
-	"ff26f51b", --Rank 12 26f51b HSV 120°, 89%, 96%
-	"ff16fc0a", --Rank 13 16fc0a HSV 120°, 96%, 99%
-	"ff00ff00", --Rank 14 00ff00 HSV 120°, 100%, 100%
+	"|cff8ea18d", --Rank 1 8ea18d HSV 117°, 12%, 63%
+	"|cff8aa888", --Rank 2 8aa888 HSV 117°, 19%, 66%
+	"|cff84b082", --Rank 3 84b082 HSV 117°, 26%, 69%
+	"|cff7eb87b", --Rank 4 7eb87b HSV 117°, 33%, 72%
+	"|cff77bf73", --Rank 5 77bf73 HSV 117°, 40%, 75%
+	"|cff6ec769", --Rank 6 6ec769 HSV 117°, 47%, 78%
+	"|cff65cf5f", --Rank 7 65cf5f HSV 118°, 54%, 81%
+	"|cff5bd654", --Rank 8 5bd654 HSV 118°, 61%, 84%
+	"|cff4fde47", --Rank 9 4fde47 HSV 118°, 68%, 87%
+	"|cff42e639", --Rank 10 42e639 HSV 118°, 75%, 90%
+	"|cff34ed2b", --Rank 11 34ed2b HSV 118°, 82%, 93%
+	"|cff26f51b", --Rank 12 26f51b HSV 120°, 89%, 96%
+	"|cff16fc0a", --Rank 13 16fc0a HSV 120°, 96%, 99%
+	"|cff00ff00", --Rank 14 00ff00 HSV 120°, 100%, 100%
 } 
 
 local function GetHPHRankOutput(rank)
@@ -219,13 +219,13 @@ local function GetHPHRankOutput(rank)
 	elseif "High Warlord" == rank or "Grand Marshal" == rank then
 		rankIndex = 14
 	else
-		rank = "Unknown"
+		--rank = "Unknown"
 		rankIndex = 0
 	end
 
 	local rankColor = HPH.systemColor
 	if(opt == "VerboseColored") then
-		rankColor = "|c" .. rankColors[rankIndex + 1]
+		rankColor = rankColors[rankIndex + 1]
 	end
 
 	return rankLabel .. rankColor .. " " .. rank .. " " .. HPH.systemColor .. "(" .. rankColor .. rankIndex .. HPH.systemColor.. ")"
