@@ -33,7 +33,7 @@ Like any other addon, using alt + f4 or otherwise crashing your game to exit it 
 
 **Mouseover DR tracking**  
 
-![alt text](https://i.imgur.com/MrzsM7D.jpg "Tooltip") ![alt text](https://i.imgur.com/ZgNnSDz.jpg "Tooltip2")  
+![alt text](https://i.imgur.com/UpGIKEO.jpg "Tooltip") ![alt text](https://i.imgur.com/CSs48Ma.jpg "Tooltip2")  
 
 **Blizzard UI fix**  
 
