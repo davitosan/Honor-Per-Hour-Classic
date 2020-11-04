@@ -8,7 +8,7 @@ HPH is an extension of [this](https://wago.io/KSACGWwO9) WA.
 ####**Server Reset time**
 By default the addon resets at 8.00 ST. This can be changed in interface settings (/hph):
 
-![alt text](https://i.imgur.com/YFyDNpp.png "GeneralSettings")
+![alt text](https://i.imgur.com/GAtZHIY.jpg "GeneralSettings")
 
 ####**Calculated Honor vs. Real Honor**
 There will always be a small rounding error in the calculated honor which be can be bounded as: error = |real honor - calculated honor| &lt; HKs, where HKs are all less than 100 pct. DR'd honorable kills
@@ -29,15 +29,15 @@ Like any other addon, using alt + f4 or otherwise crashing your game to exit it 
 
 **Combat summary**  
 
-![alt text](https://i.imgur.com/Ht46z7k.png "HonorMsg") ![alt text](https://i.imgur.com/m5Qpxb6.png "HonorMsg2")  
+![alt text](https://i.imgur.com/yNYOBWS.jpg "HonorMsg") ![alt text](https://i.imgur.com/VQkeWRP.jpg "HonorMsg2")  
 
 **Mouseover DR tracking**  
 
-![alt text](https://i.imgur.com/OMXeihY.png "Tooltip") ![alt text](https://i.imgur.com/Nvpy1qA.png "Tooltip2")  
+![alt text](https://i.imgur.com/MrzsM7D.jpg "Tooltip") ![alt text](https://i.imgur.com/ZgNnSDz.jpg "Tooltip2")  
 
 **Blizzard UI fix**  
 
-![alt text](https://i.imgur.com/lctFnQq.png "HonorTab")  
+![alt text](https://i.imgur.com/1LlR7zQ.jpg "HonorTab")  
 
 **Other**  
 /hph search &lt;name&gt;  (prints how many times you have killed a player today)  
