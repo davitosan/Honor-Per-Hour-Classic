@@ -29,7 +29,7 @@ Like any other addon, using alt + f4 or otherwise crashing your game to exit it 
 
 **Combat summary**  
 
-![alt text](https://i.imgur.com/yNYOBWS.jpg "HonorMsg") ![alt text](https://i.imgur.com/VQkeWRP.jpg "HonorMsg2")  
+![alt text](https://i.imgur.com/VnRZIOm.jpg "HonorMsg") ![alt text](https://i.imgur.com/VQkeWRP.jpg "HonorMsg2")  
 
 **Mouseover DR tracking**  
 
