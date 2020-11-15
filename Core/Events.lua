@@ -30,23 +30,10 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 	if event == "CHAT_MSG_COMBAT_HONOR_GAIN" then
 		local honor_msg = select(1,...)
 		if honor_msg ~= nil then
-			local numBattlefieldScores = GetNumBattlefieldScores()
-			local name, classToken, rank = HPH.GetName(honor_msg)
-			local honor_nominal = HPH.GetHonor(honor_msg)
-			local timesKilled = HPH.GetTimesKilled(name)
-			local discount, discountHex = HPH.GetDiscountRate(timesKilled)
-			local coef = 1 - discount
-			local honor_real = honor_nominal * coef
-			local optChatType = HPH.GetOption("chat_system_type")
 			local msg = ""
+			local honor_nominal = HPH.GetHonor(honor_msg)
 
-			--print("discount : " .. discount)
-			--print("coef: " .. coef)
 			--print("honor_nominal: " .. honor_nominal)
-			--print("honor_real: " .. honor_real)
-			--print("name: " .. name)
-			
-			HPH.hk_today_nominal, _ = GetPVPSessionStats()
 
 			if string.match(honor_msg, "%(") == nil then -- BG
 				hph_killsdb[getn(hph_killsdb) + 1] = {
@@ -59,6 +46,21 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 				HPH.honor_session = HPH.honor_session + honor_nominal
 				msg = HPH.systemColor .. "+honor - " .. honor_nominal .. "|r (|cff0099ffBG" .. HPH.systemColor .. ")"
 			else
+				local numBattlefieldScores = GetNumBattlefieldScores()
+				local name, classToken, rank = HPH.GetName(honor_msg)
+				local timesKilled = HPH.GetTimesKilled(name)
+				local discount, discountHex = HPH.GetDiscountRate(timesKilled)
+				local coef = 1 - discount
+				local honor_real = honor_nominal * coef
+				local optChatType = HPH.GetOption("chat_system_type")
+
+				--print("name: " .. name)
+				--print("discount : " .. discount)
+				--print("coef: " .. coef)
+				--print("honor_real: " .. honor_real)
+				
+				HPH.hk_today_nominal, _ = GetPVPSessionStats()
+
 				hph_killsdb[getn(hph_killsdb) + 1] = {
 					name,
 					honor_real, 
