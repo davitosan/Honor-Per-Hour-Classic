@@ -21,12 +21,10 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 		_, HPH.honor_week = GetPVPThisWeekStats()
 		HPH.hk_today_nominal, _ = GetPVPSessionStats()
 		HPH.hk_today_real = HPH.GetHKsToday()
-
 		return
 	end
 	if event == "PLAYER_ENTERING_WORLD" then
 		HPH.PlayerZoned()
-
 		return
 	end
 	if event == "CHAT_MSG_COMBAT_HONOR_GAIN" then
@@ -45,20 +43,20 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 
 			if classToken == nil then
 				classToken = "-Unknown "
-			elseif(classToken == "SHAMAN") then
+			elseif classToken == "SHAMAN" then
 				sourceHex = "ff0070DE"
 			else
 				_, _, _, sourceHex = GetClassColor(classToken)
 			end
 
 			if sourceHex == nil then
-				sourceHex ="aaaaaaaa"
+				sourceHex ="fffffb00"
 			end
 
-			--print(discount)
-			--print(coef)
-			--print(honor_nominal)
-			--print(honor_real)
+			--print("discount : " .. discount)
+			--print("coef: " .. coef)
+			--print("honor_nominal: " .. honor_nominal)
+			--print("honor_real: " .. honor_real)
 			
 			HPH.hk_today_nominal, _ = GetPVPSessionStats()
 
@@ -93,6 +91,12 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 					local server = HPH.systemColor .. "-"
 					if string.match(name, "-") then
 						victimname, victimserver = name:match("([^,]+)-([^,]+)")
+
+						if victimserver == "Unknown" then
+							RequestBattlefieldScoreData()
+							sourceHex = "fffffb00"
+						end
+
 						server = HPH.systemColor .. "-" .. victimserver .. "|r | " .. HPH.systemColor
 					end
 					if optChatType == "VerboseColored" then
@@ -114,7 +118,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 
 	if event == "PLAYER_REGEN_DISABLED" then
 		if HPH.GetOption("chat_combat") then 
-			if (UnitIsPVP("player") == false) then
+			if UnitIsPVP("player") == false then
 				return
 			end
 
@@ -129,7 +133,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 	
 	if event == "PLAYER_REGEN_ENABLED" then
 		if HPH.GetOption("chat_combat") then 
-			if (UnitIsPVP("player") == false) then
+			if UnitIsPVP("player") == false then
 				return
 			end
 

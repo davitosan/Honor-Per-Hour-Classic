@@ -8,7 +8,7 @@ HPH.GetOption = GetOption
 
 -- this is called after eventg	ww
 local function myChatFilter(_s, e, msg, ...)
-	if(HPH.GetOption("chat_system_honor")) then
+	if HPH.GetOption("chat_system_honor") then
 		return true
 	end
 
@@ -25,7 +25,7 @@ HPH.PlayerZoned = PlayerZoned
 --Looking for Battleground to start RequestBattlefieldScoreData timer
 local function Check_ZONE_CHANGED_NEW_AREA (...)
 	local zoneName, zoneType, _, _, _, _, _, zoneMapID = GetInstanceInfo()
-	if (zoneType == "pvp") then --> battlegrounds
+	if zoneType == "pvp" then --> battlegrounds
 		timers:ScheduleTimer(HPH.BgScoreUpdate, 0.5)
 		HPH.StartBgUpdater()
 	else
@@ -84,8 +84,8 @@ local function RGBToHex(r, g, b)
 	b = tonumber(b)
 
 	--Check if whole numbers.
-	if (r == math.floor(r) and g == math.floor(g) and b == math.floor(b)
-			and (r > 1 or g > 1 or b > 1)) then
+	if r == math.floor(r) and g == math.floor(g) and b == math.floor(b)
+			and (r > 1 or g > 1 or b > 1) then
 		r = r <= 255 and r >= 0 and r or 0;
 		g = g <= 255 and g >= 0 and g or 0;
 		b = b <= 255 and b >= 0 and b or 0;
@@ -224,7 +224,7 @@ local function GetHPHRankOutput(rank)
 	end
 
 	local rankColor = HPH.systemColor
-	if(opt == "VerboseColored") then
+	if opt == "VerboseColored" then
 		rankColor = rankColors[rankIndex + 1]
 	end
 
