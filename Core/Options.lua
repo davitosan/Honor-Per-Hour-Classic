@@ -76,6 +76,16 @@ local function GetOptionsTable()
 							HPH.SetToday()
 						end
 					},
+					debugdump = {
+						name = "Debug Database",
+						desc = "Debug Logging of Honor Database",
+						type = 'execute',
+						order = 6,
+						width = .8,
+						func = function()
+							HPH.DebugDumpDatabase()
+						end
+					},
 				}, 	
 			},
 			Window = {

@@ -30,7 +30,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 	if event == "CHAT_MSG_COMBAT_HONOR_GAIN" then
 		local honor_msg = select(1,...)
 		if honor_msg ~= nil then
-            local numBattlefieldScores = GetNumBattlefieldScores()
+			local numBattlefieldScores = GetNumBattlefieldScores()
 			local name, classToken, rank = HPH.GetName(honor_msg)
 			local honor_nominal = HPH.GetHonor(honor_msg)
 			local timesKilled = HPH.GetTimesKilled(name)
@@ -39,24 +39,12 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 			local honor_real = honor_nominal * coef
 			local optChatType = HPH.GetOption("chat_system_type")
 			local msg = ""
-			local sourcHex = "aaaaaaaa"
-
-			if classToken == nil then
-				classToken = "-Unknown "
-			elseif classToken == "SHAMAN" then
-				sourceHex = "ff0070DE"
-			else
-				_, _, _, sourceHex = GetClassColor(classToken)
-			end
-
-			if sourceHex == nil then
-				sourceHex ="fffffb00"
-			end
 
 			--print("discount : " .. discount)
 			--print("coef: " .. coef)
 			--print("honor_nominal: " .. honor_nominal)
 			--print("honor_real: " .. honor_real)
+			--print("name: " .. name)
 			
 			HPH.hk_today_nominal, _ = GetPVPSessionStats()
 
@@ -85,21 +73,27 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 					HPH.honorSumNom = HPH.honorSumNom + honor_nominal
 					HPH.honorSumReal = HPH.honorSumReal + honor_real
 				end
+
 				if optChatType ~= "None" then
 					local rankOutput = HPH.GetHPHRankOutput(rank)
 					local victimname = name
 					local server = HPH.systemColor .. "-"
 					if string.match(name, "-") then
 						victimname, victimserver = name:match("([^,]+)-([^,]+)")
-
-						if victimserver == "Unknown" then
-							RequestBattlefieldScoreData()
-							sourceHex = "fffffb00"
-						end
-
 						server = HPH.systemColor .. "-" .. victimserver .. "|r | " .. HPH.systemColor
 					end
+
 					if optChatType == "VerboseColored" then
+						--Get Class Color
+						local sourceHex = "fffffb00"
+						if classToken ~= nil then
+							if classToken == "SHAMAN" then
+								sourceHex = "ff0070DE"
+							else
+								_, _, _, sourceHex = GetClassColor(classToken)
+							end
+						end
+						
 						msg = "|c" .. sourceHex .. victimname .. server .. rankOutput .. "|r | " .. HPH.systemColor .. "Kills: |r" .. discountHex .. timesKilled + 1 .. "|r | " .. HPH.systemColor .. "Honor: " .. discountHex .. math.floor(honor_real) .. HPH.systemColor .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. HPH.systemColor .. ")|r"
 					elseif optChatType == "Verbose" then
 						msg = HPH.systemColor .. victimname .. server .. rankOutput .. " | Kills: " .. timesKilled + 1 .. " | Honor: " .. math.floor(honor_real) .. " (" .. coef * 100 .. "%)"

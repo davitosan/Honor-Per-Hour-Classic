@@ -120,16 +120,16 @@ local function GetName(inp)
 	
 	-- In BG
 	for i=1,numBattlefieldScores,1 do 
-		local name, killingBlows, honorableKills, deaths, honorGained, faction, _, race, class, classToken, damageDone, healingDone, bgRating, ratingChange, preMatchMMR, mmrChange, talentSpec = GetBattlefieldScore (i)
+		local name, killingBlows, honorableKills, deaths, honorGained, faction, _, race, class, classToken, damageDone, healingDone, bgRating, ratingChange, preMatchMMR, mmrChange, talentSpec = GetBattlefieldScore(i)
 		if name ~= nill and string.find(name, "-") or 0 > 0 then -- Player from other realm
 			if string.match(name, "(.-)-%s*") == msgName then
 				return name, classToken, rank
 			end
 		elseif name == msgName then  -- Player from own realm
-			return name, classToken, rank
+			return name .. "-" .. GetRealmName(), classToken, rank
 		end
 	end
-	
+
 	-- In BG, but empty player name on scoreboard
 	return msgName .. "-Unknown ", nil, rank 
 end
@@ -236,3 +236,52 @@ function addComas(str)
 	return #str % 3 == 0 and str:reverse():gsub("(%d%d%d)", "%1."):reverse():sub(2) or str:reverse():gsub("(%d%d%d)", "%1."):reverse()
 end
 HPH.addComas = addComas
+
+function DebugDumpDatabase()
+	--Setup Frame
+	local editFrame = CreateFrame("ScrollFrame", "DebugDBDumpFrame", UIParent, "InputScrollFrameTemplate")
+	editFrame:SetPoint("CENTER")
+	editFrame:SetSize(700, 500)
+	editFrame:Hide()
+	--So interface options and this frame will open on top of each other.
+	if (InterfaceOptionsFrame:IsShown()) then
+		editFrame:SetFrameStrata("DIALOG")
+	else
+		editFrame:SetFrameStrata("HIGH")
+	end
+
+	--Setup EditBox
+	local editBox = editFrame.EditBox
+	editBox:SetFont("Fonts\\ARIALN.ttf", 13)
+	editBox:SetWidth(editFrame:GetWidth()) 
+	editBox:SetScript("OnEscapePressed", function(self)
+		-- functions
+		editBox:SetText("")
+		editBox:ClearFocus()
+		editFrame:Hide()
+	end)
+	editFrame:Hide()
+
+	-- setup edit box closing button
+	local btnClose = CreateFrame("Button", "DebugDBDumpFrameClose", editFrame, "UIPanelButtonTemplate")
+	btnClose:SetPoint("TOPRIGHT")
+	btnClose:SetSize(25, 25)
+	btnClose:SetText("x")
+	btnClose:SetFrameStrata("FULLSCREEN")
+	btnClose:SetScript("OnClick", function(self)
+		editBox:SetText("")
+		editBox:ClearFocus()
+		editFrame:Hide()
+	end)
+
+	if hph_killsdb ~= nil then
+		for i=getn(hph_killsdb),1,-1 do 
+			editBox:Insert(("Name: " .. hph_killsdb[i][1] .. " Honor(Real): " .. hph_killsdb[i][2] .. " Honor(Nominal): " .. hph_killsdb[i][3] .. " Time: " .. hph_killsdb[i][4]) .. "\n")
+		end
+	end
+
+	editFrame:Show()
+	editBox:HighlightText()
+	editBox:SetFocus()
+end
+HPH.DebugDumpDatabase = DebugDumpDatabase
