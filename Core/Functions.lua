@@ -102,38 +102,75 @@ local function GetHonor(inp)
 end
 HPH.GetHonor = GetHonor
 
--- Parse Honor Message for name and return it with server suffix
-local function GetName(inp)
-	local honor_gain_pattern = string.gsub(COMBATLOG_HONORGAIN, "%(", "%%(")
-	honor_gain_pattern = string.gsub(honor_gain_pattern, "%)", "%%)")
-	honor_gain_pattern = string.gsub(honor_gain_pattern, "(%%s)", "(.+)")
-	honor_gain_pattern = string.gsub(honor_gain_pattern, "(%%d)", "(%%d+)")
-    local victim, rank, est_honor = inp:match(honor_gain_pattern)
-
+-- Takes PlayerName and returns it with server suffix
+local function GetNameServer(inp)
 	local msgName = string.match(inp or "", "^([^%s]+)")
+	
 	local numBattlefieldScores = GetNumBattlefieldScores()
 
 	-- In World
-	if numBattlefieldScores == 0 then
-		return msgName .. "-" .. GetRealmName(), nil, rank
+	if numBattlefieldScores == 0 then 
+		return msgName .. "-" .. GetRealmName()
 	end
 	
 	-- In BG
 	for i=1,numBattlefieldScores,1 do 
-		local name, killingBlows, honorableKills, deaths, honorGained, faction, _, race, class, classToken, damageDone, healingDone, bgRating, ratingChange, preMatchMMR, mmrChange, talentSpec = GetBattlefieldScore(i)
-		if name ~= nill and string.find(name, "-") or 0 > 0 then -- Player from other realm
+		local name = GetBattlefieldScore(i) or ""
+		if string.find(name, "-") or 0 > 0 then -- Player from other realm
 			if string.match(name, "(.-)-%s*") == msgName then
-				return name, classToken, rank
+				return name
 			end
 		elseif name == msgName then  -- Player from own realm
-			return name .. "-" .. GetRealmName(), classToken, rank
+			return name .. "-" .. GetRealmName()
+		end
+	end
+	
+	-- In BG, but empty player name on scoreboard
+	return msgName .. "-Unknown" 
+end
+HPH.GetNameServer = GetNameServer
+
+-- Parse Honor Message for name and returns name with server suffix, class name and rank
+-- XXXX dies, honorable kill Rank: XXX (Estimated Honor Points: N)
+local function ParseHonorMessage(inp)
+	local honor_gain_pattern = string.gsub(COMBATLOG_HONORGAIN, "%(", "%%(")
+	honor_gain_pattern = string.gsub(honor_gain_pattern, "%)", "%%)")
+	honor_gain_pattern = string.gsub(honor_gain_pattern, "(%%s)", "(.+)")
+	honor_gain_pattern = string.gsub(honor_gain_pattern, "(%%d)", "(%%d+)")
+	local victim, rank, est_honor = inp:match(honor_gain_pattern)
+
+	local msgName = string.match(inp or "", "^([^%s]+)")
+	local numBattlefieldScores = GetNumBattlefieldScores()
+
+	print("msgName: " .. msgName .. " numBattlefieldScores: " .. numBattlefieldScores)
+
+	-- In World 
+	if numBattlefieldScores == 0 then
+		print("In World | name: " .. msgName .. " GetRealmName(): " .. GetRealmName())
+		return msgName .. "-" .. GetRealmName(), nil, rank		
+	end
+
+	-- In BG
+	for i=1,numBattlefieldScores,1 do 
+		local name, killingBlows, honorableKills, deaths, honorGained, faction, _, race, class, classToken, damageDone, healingDone, bgRating, ratingChange, preMatchMMR, mmrChange, talentSpec = GetBattlefieldScore(i)
+		if (name ~= nill) and (faction ~= nil) and (faction ~= UnitFactionGroup("player")) then
+			if (string.find(name, "-") or 0 > 0) and (string.match(name, "(.-)-%s*") == msgName) then -- Player from other realm
+				print("In BG | name: " .. name .. " classToken: " .. classToken .. " rank: " .. rank)
+				return name, classToken, rank
+			elseif name == msgName then  -- Player from own realm
+				print("In BG | name: " .. name .. " classToken: " .. classToken .. " rank: " .. rank)
+				return name .. "-" .. GetRealmName(), classToken, rank
+			end
+		else
+			print("name is nil OR faction is nil OR faction is the same as player")
 		end
 	end
 
 	-- In BG, but empty player name on scoreboard
+	print("|cffff3700[ERROR]Could not find player name on scoreboard? |r" .. msgName)
 	return msgName .. "-Unknown ", nil, rank 
 end
-HPH.GetName = GetName
+HPH.ParseHonorMessage = ParseHonorMessage
 
 -- Get DR coefficient
 local function GetDiscountRate(timesKilled)

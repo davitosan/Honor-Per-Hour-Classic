@@ -46,8 +46,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 				HPH.honor_session = HPH.honor_session + honor_nominal
 				msg = HPH.systemColor .. "+honor - " .. honor_nominal .. "|r (|cff0099ffBG" .. HPH.systemColor .. ")"
 			else
-				local numBattlefieldScores = GetNumBattlefieldScores()
-				local name, classToken, rank = HPH.GetName(honor_msg)
+				local name, classToken, rank = HPH.ParseHonorMessage(honor_msg)
 				local timesKilled = HPH.GetTimesKilled(name)
 				local discount, discountHex = HPH.GetDiscountRate(timesKilled)
 				local coef = 1 - discount
@@ -67,9 +66,12 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 					honor_nominal, 
 					time()
 					}
+
 				HPH.honor_today = HPH.honor_today + honor_real
 				HPH.honor_session = HPH.honor_session + honor_real
+
 				if honor_real > 0 then HPH.hk_today_real = HPH.hk_today_real + 1 end
+				
 				if HPH.GetOption("chat_combat") then
 					HPH.killsInFight = HPH.killsInFight + 1
 					HPH.honorSumNom = HPH.honorSumNom + honor_nominal
