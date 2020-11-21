@@ -61,7 +61,9 @@ local function GetHKsToday()
 	if hph_killsdb ~= nil then
 		for i=getn(hph_killsdb),1,-1 do 
 			if HPH.IsTimestampToday(hph_killsdb[i][4]) then
-				if hph_killsdb[i][2] == 0 then hks_today_dr = hks_today_dr + 1 end
+				if hph_killsdb[i][1] ~= "HPHBGHONORAWARDED" then
+					hks_today_dr = hks_today_dr + 1
+				end
 			else
 				return HPH.hk_today_nominal - hks_today_dr
 			end		

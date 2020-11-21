@@ -9,6 +9,8 @@ HPH.Events:RegisterEvent("PLAYER_REGEN_ENABLED")
 HPH.Events:RegisterEvent("PLAYER_ENTERING_WORLD")
 HPH.Events:RegisterEvent("CHAT_MSG_COMBAT_HONOR_GAIN")
 
+HPH.Events:RegisterEvent("UPDATE_BATTLEFIELD_SCORE")
+
 ChatFrame_AddMessageEventFilter("CHAT_MSG_COMBAT_HONOR_GAIN", HPH.myChatFilter)
 
 HPH.Events:SetScript("OnEvent", function(self, event, ...)
@@ -62,8 +64,8 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 
 				hph_killsdb[getn(hph_killsdb) + 1] = {
 					name,
-					honor_real, 
-					honor_nominal, 
+					honor_real,
+					honor_nominal,
 					time()
 					}
 
@@ -114,6 +116,11 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 		return
 	end
 
+	if event == "UPDATE_BATTLEFIELD_SCORE" then
+		--print("UPDATE_BATTLEFIELD_SCORE")
+		return
+	end
+
 	if event == "PLAYER_REGEN_DISABLED" then
 		if HPH.GetOption("chat_combat") then 
 			if UnitIsPVP("player") == false then
@@ -157,8 +164,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 				end
 			end
 			
-			local msg = "-Combat ended: Kills: " .. HPH.killsInFight .. " | Honor: |r" .. discountHex .. math.floor(HPH.honorSumReal) .. "|r of |r" .. discountHex .. HPH.honorSumNom .. "|r | (" .. discountHex .. pct .. "%|r)"
-			print(msg) 
+			print("-Combat ended: Kills: " .. HPH.killsInFight .. " | Honor: |r" .. discountHex .. math.floor(HPH.honorSumReal) .. "|r of |r" .. discountHex .. HPH.honorSumNom .. "|r | (" .. discountHex .. pct .. "%|r)")
 		end
 		return
 	end

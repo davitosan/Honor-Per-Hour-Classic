@@ -1,6 +1,8 @@
 local HPH = LibStub("AceAddon-3.0"):GetAddon("HPH")
 local timers = LibStub("AceTimer-3.0")
 
+local RequestBattlefieldScoreDataTimer
+
 local function GetOption(option)
 	return (hph_options[option] == nil and hph_options_defaults[option] or hph_options[option])
 end
@@ -26,23 +28,26 @@ HPH.PlayerZoned = PlayerZoned
 local function Check_ZONE_CHANGED_NEW_AREA (...)
 	local zoneName, zoneType, _, _, _, _, _, zoneMapID = GetInstanceInfo()
 	if zoneType == "pvp" then --> battlegrounds
-		timers:ScheduleTimer(HPH.BgScoreUpdate, 0.5)
-		HPH.StartBgUpdater()
+		HPH.BgScoreUpdate() -- RequestBattlefieldScoreData right away
+		HPH.StartBgUpdater() -- Start the timer
 	else
-		timers:CancelAllTimers()
+		if RequestBattlefieldScoreDataTimer ~= nil then
+			timers:CancelTimer(RequestBattlefieldScoreDataTimer)
+			RequestBattlefieldScoreDataTimer = nil
+		end
 	end
 end
 HPH.Check_ZONE_CHANGED_NEW_AREA = Check_ZONE_CHANGED_NEW_AREA
 
 --Start the RequestBattlefieldScoreData timer
 local function StartBgUpdater()
-	timers:ScheduleRepeatingTimer(HPH.BgScoreUpdate, 30)
+	RequestBattlefieldScoreDataTimer = timers:ScheduleRepeatingTimer(HPH.BgScoreUpdate, 30)
 end
 HPH.StartBgUpdater = StartBgUpdater
 
 --Call RequestBattlefieldScoreData to get score info
 local function BgScoreUpdate()
-	--print("RequestBattlefieldScoreData()") 
+	--print("RequestBattlefieldScoreData()")
 	RequestBattlefieldScoreData()
 end
 HPH.BgScoreUpdate = BgScoreUpdate
@@ -105,8 +110,6 @@ HPH.GetHonor = GetHonor
 -- Takes PlayerName and returns it with server suffix
 local function GetNameServer(inp)
 	local msgName = string.match(inp or "", "^([^%s]+)")
-	
-	local numBattlefieldScores = GetNumBattlefieldScores()
 
 	-- In World
 	if numBattlefieldScores == 0 then 
@@ -114,12 +117,10 @@ local function GetNameServer(inp)
 	end
 	
 	-- In BG
-	for i=1,numBattlefieldScores,1 do 
+	for i=1,GetNumBattlefieldScores(),1 do 
 		local name = GetBattlefieldScore(i) or ""
-		if string.find(name, "-") or 0 > 0 then -- Player from other realm
-			if string.match(name, "(.-)-%s*") == msgName then
-				return name
-			end
+		if (string.find(name, "-") or 0 > 0) and (string.match(name, "(.-)-%s*") == msgName) then -- Player from other realm
+			return name
 		elseif name == msgName then  -- Player from own realm
 			return name .. "-" .. GetRealmName()
 		end
@@ -138,37 +139,45 @@ local function ParseHonorMessage(inp)
 	honor_gain_pattern = string.gsub(honor_gain_pattern, "(%%s)", "(.+)")
 	honor_gain_pattern = string.gsub(honor_gain_pattern, "(%%d)", "(%%d+)")
 	local victim, rank, est_honor = inp:match(honor_gain_pattern)
-
-	local msgName = string.match(inp or "", "^([^%s]+)")
 	local numBattlefieldScores = GetNumBattlefieldScores()
 
-	print("msgName: " .. msgName .. " numBattlefieldScores: " .. numBattlefieldScores)
-
 	-- In World 
-	if numBattlefieldScores == 0 then
-		print("In World | name: " .. msgName .. " GetRealmName(): " .. GetRealmName())
-		return msgName .. "-" .. GetRealmName(), nil, rank		
+	if GetNumBattlefieldScores() == 0 then
+		return victim .. "-" .. GetRealmName(), nil, rank
 	end
 
 	-- In BG
-	for i=1,numBattlefieldScores,1 do 
+	for i=1,GetNumBattlefieldScores(),1 do 
 		local name, killingBlows, honorableKills, deaths, honorGained, faction, _, race, class, classToken, damageDone, healingDone, bgRating, ratingChange, preMatchMMR, mmrChange, talentSpec = GetBattlefieldScore(i)
 		if (name ~= nill) and (faction ~= nil) and (faction ~= UnitFactionGroup("player")) then
-			if (string.find(name, "-") or 0 > 0) and (string.match(name, "(.-)-%s*") == msgName) then -- Player from other realm
-				print("In BG | name: " .. name .. " classToken: " .. classToken .. " rank: " .. rank)
+			if (string.find(name, "-") or 0 > 0) and (string.match(name, "(.-)-%s*") == victim) then -- Player from other realm
 				return name, classToken, rank
-			elseif name == msgName then  -- Player from own realm
-				print("In BG | name: " .. name .. " classToken: " .. classToken .. " rank: " .. rank)
+			elseif name == victim then  -- Player from own realm
 				return name .. "-" .. GetRealmName(), classToken, rank
 			end
-		else
-			print("name is nil OR faction is nil OR faction is the same as player")
 		end
 	end
 
+--[=====[ 
 	-- In BG, but empty player name on scoreboard
-	print("|cffff3700[ERROR]Could not find player name on scoreboard? |r" .. msgName)
-	return msgName .. "-Unknown ", nil, rank 
+	print("|cffff3700[ERROR]Could not find player name on scoreboard? |r" .. victim)
+
+	--Debug! DO IT AGAIN!
+	print("numBattlefieldScores: " .. numBattlefieldScores)
+	for i=1,GetNumBattlefieldScores(),1 do 
+		local name, killingBlows, honorableKills, deaths, honorGained, faction, _, race, class, classToken, damageDone, healingDone, bgRating, ratingChange, preMatchMMR, mmrChange, talentSpec = GetBattlefieldScore(i)
+		print("GetBattlefieldScore(i) i: " .. i .. " | name: " .. name .. " | faction: " .. faction .. " | classToken: " .. classToken)
+		if (name ~= nill) and (faction ~= nil) and (faction ~= UnitFactionGroup("player")) then
+			if (string.find(name, "-") or 0 > 0) and (string.match(name, "(.-)-%s*") == victim) then -- Player from other realm
+				return name, classToken, rank
+			elseif name == victim then  -- Player from own realm
+				return name .. "-" .. GetRealmName(), classToken, rank
+			end
+		end
+	end
+--]=====]
+
+	return victim .. "-Unknown ", nil, rank 
 end
 HPH.ParseHonorMessage = ParseHonorMessage
 
