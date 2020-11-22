@@ -35,8 +35,6 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 			local msg = ""
 			local honor_nominal = HPH.GetHonor(honor_msg)
 
-			--print("honor_nominal: " .. honor_nominal)
-
 			if string.match(honor_msg, "%(") == nil then -- BG
 				hph_killsdb[getn(hph_killsdb) + 1] = {
 					"HPHBGHONORAWARDED",
