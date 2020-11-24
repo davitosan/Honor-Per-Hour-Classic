@@ -219,7 +219,7 @@ local function GetOptionsTable()
 							hph_options["chat_message_color_r"] = r
 							hph_options["chat_message_color_g"] = g
 							hph_options["chat_message_color_b"] = b
-							HPH.systemColor = "|cff" .. HPH.RGBToHex(r, g, b)
+							hph_systemColor = "|cff" .. HPH.RGBToHex(r, g, b)
 						end,				
 					},
 					chatsystemtype = {

@@ -3,7 +3,7 @@
 ## Version: 2.3
 ## Title: HPH
 ## Notes: Honor Per Hour Tracking. v2.3
-## SavedVariablesPerCharacter: hph_killsdb, hph_today, hph_week, hph_options
+## SavedVariablesPerCharacter: hph_killsdb, hph_today, hph_week, hph_options, hph_systemColor
 
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml

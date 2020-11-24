@@ -25,6 +25,7 @@ if hph_killsdb == nil then hph_killsdb = {} end
 if hph_today == nil then hph_today = {} end
 if hph_week == nil then hph_week = {} end
 if hph_options == nil then hph_options = {} end
+if hph_systemColor == nil then hph_systemColor = "|cfffffb00" end
 
 -- Init Session State
 HPH.locale = GetLocale()
@@ -37,6 +38,5 @@ HPH.honor_session = 0
 HPH.honorSumNom = 0
 HPH.honorSumReal = 0
 HPH.killsInFight = 0
-HPH.systemColor = "|cfffffb00"
 HPH.optionsFrames = {}
 HPH.hph_playersdb = {}

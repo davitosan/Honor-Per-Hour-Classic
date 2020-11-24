@@ -8,6 +8,7 @@ HPH.Events:RegisterEvent("PLAYER_ENTERING_WORLD")
 HPH.Events:RegisterEvent("PLAYER_REGEN_DISABLED")
 HPH.Events:RegisterEvent("PLAYER_REGEN_ENABLED")
 HPH.Events:RegisterEvent("CHAT_MSG_COMBAT_HONOR_GAIN")
+HPH.Events:RegisterEvent("CHAT_MSG_BG_SYSTEM_NEUTRAL")
 HPH.Events:RegisterEvent("UPDATE_BATTLEFIELD_SCORE")
 
 HPH.Events:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
@@ -28,7 +29,13 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 	end
 	if event == "PLAYER_ENTERING_WORLD" then
 		HPH.hph_playersdb = {} --Reset our Player Cache
-		return
+
+		if (zoneType == "pvp") then --> battlegrounds
+			RequestBattlefieldScoreData()
+		end
+	end
+	if event == "CHAT_MSG_BG_SYSTEM_NEUTRAL" then
+		RequestBattlefieldScoreData()
 	end
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		local timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, 
@@ -89,7 +96,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 				HPH.honor_today = HPH.honor_today + honor_nominal
 				HPH.honor_session = HPH.honor_session + honor_nominal
 				if optChatType ~= "None" then
-					msg = "|cfffffb00+honor - " .. honor_nominal .. "|r (|cff0099ffBG|r|cfffffb00)"
+					msg = hph_systemColor .. "+honor - " .. honor_nominal .. "(|cff0099ffBG" .. hph_systemColor .. ")"
 				end
 			else
 				hph_killsdb[getn(hph_killsdb) + 1] = {
