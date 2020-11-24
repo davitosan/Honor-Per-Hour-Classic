@@ -249,23 +249,19 @@ local function GetOptionsTable()
 						set = function(info, value) 
 							hph_options["chat_combat"] = not HPH.GetOption("chat_combat")	
 						end,
-					},		
+					},
 					chatsystemhonor = {
 						order = 4,
 						type = "toggle",
-						name = "Print Honor Message",
-						desc = "...",
 						name = "Suppress System Honor Gain Message",
 						desc = "Hides system messages related to Honor Gain",
 						width = "full",
-						get = function(info) return HPH.GetOption("chat_honor") end,
 						get = function(info) return HPH.GetOption("chat_system_honor") end,
 						set = function(info, value) 
-							hph_options["chat_honor"] = not HPH.GetOption("chat_honor")	
 							hph_options["chat_system_honor"] = not HPH.GetOption("chat_system_honor")	
 						end,
-					},	
-				}, 	
+					},
+				},
 			},
 			Honortab = {
 				name = "Honortab",

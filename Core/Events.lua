@@ -69,7 +69,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 			local discount, discountHex = HPH.GetDiscountRate(timesKilled)
 			local coef = 1 - discount
 			local honor_real = honor_nominal * coef
-			local optChatHonor = HPH.GetOption("chat_honor")
+			local optChatType = HPH.GetOption("chat_system_type")
 			local msg = ""
 			
 			--print(discount)
@@ -88,7 +88,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 					}
 				HPH.honor_today = HPH.honor_today + honor_nominal
 				HPH.honor_session = HPH.honor_session + honor_nominal
-				if optChatHonor then
+				if optChatType ~= "None" then
 					msg = "|cfffffb00+honor - " .. honor_nominal .. "|r (|cff0099ffBG|r|cfffffb00)"
 				end
 			else

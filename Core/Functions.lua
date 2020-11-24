@@ -165,7 +165,7 @@ local function DebugDumpDatabase(database)
 	editFrame:SetSize(700, 500)
 	editFrame:Hide()
 	--So interface options and this frame will open on top of each other.
-	if (InterfaceOptionsFrame:IsShown()) then
+	if InterfaceOptionsFrame:IsShown() then
 		editFrame:SetFrameStrata("DIALOG")
 	else
 		editFrame:SetFrameStrata("HIGH")
@@ -195,7 +195,7 @@ local function DebugDumpDatabase(database)
 		editFrame:Hide()
 	end)
 
-	if(database == "killsdb") then
+	if database == "killsdb" then
 		DumpKillsDB(editBox)
 	elseif database == "playersdb" then
 		DumpPlayersDB(editBox)
