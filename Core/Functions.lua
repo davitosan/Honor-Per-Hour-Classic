@@ -5,6 +5,16 @@ local function GetOption(option)
 end
 HPH.GetOption = GetOption
 
+-- this is called after eventg	ww
+local function myChatFilter(_s, e, msg, ...)
+	if HPH.GetOption("chat_system_honor") then
+		return true
+	end
+
+	return false
+end
+HPH.myChatFilter = myChatFilter
+
 -- Creates a relation between server time (H:M) and local time (UNIX)
 local function SetToday()
 	local ST_hour, ST_min = _G.GetGameTime()									-- Server time
@@ -49,8 +59,13 @@ local function GetName(inp)
 	if GetNumBattlefieldScores() == 0 then 
 		return msgName .. "-" .. GetRealmName()
 	end
+
+	-- Look at Combat Log Cache first
+	if HPH.hph_playersdb[msgName] ~= nil then
+		return msgName .. "-" .. HPH.hph_playersdb[msgName][1]
+	end	
 	
-	-- In BG
+	-- Look at Battleground scoreboard
 	for i=1,GetNumBattlefieldScores(),1 do 
 		local name = GetBattlefieldScore(i) or ""
 		if string.find(name, "-") or 0 > 0 then -- Player from other realm
@@ -97,7 +112,97 @@ local function GetDiscountRate(timesKilled)
 end
 HPH.GetDiscountRate = GetDiscountRate
 
-function addComas(str)
+local function GetFactionByRace(Race)
+	if Race ~= nil then
+		if Race == "Tauren" or Race == "Scourge" or Race == "Orc" or Race == "Troll" then
+			return "Horde"
+		end
+
+		if Race == "Human" or Race == "Gnome" or Race == "NightElf" or Race == "Dwarf" then
+			return "Alliance"
+		end
+	end
+
+	return "Unknown"
+end
+HPH.GetFactionByRace = GetFactionByRace
+
+local function addComas(str)
 	return #str % 3 == 0 and str:reverse():gsub("(%d%d%d)", "%1."):reverse():sub(2) or str:reverse():gsub("(%d%d%d)", "%1."):reverse()
 end
 HPH.addComas = addComas
+
+local function DumpKillsDB(editBox)
+	if hph_killsdb ~= nil then
+		for i=getn(hph_killsdb),1,-1 do 
+			editBox:Insert(("Name: " .. hph_killsdb[i][1] .. " Honor(Real): " .. hph_killsdb[i][2] .. " Honor(Nominal): " .. hph_killsdb[i][3] .. " Time: " .. hph_killsdb[i][4]) .. "\n")
+		end
+	end
+
+	if hph_killsdb == nil or getn(hph_killsdb) == 0 then
+		editBox:Insert("EMPTY")
+	end
+end
+
+local function DumpPlayersDB(editBox)
+	local count = 0
+	if HPH.hph_playersdb ~= nil then
+		for k, v in pairs(HPH.hph_playersdb) do
+			editBox:Insert("Name: " .. k .. " Server: " .. v[1] .. " Class: " .. v[2] .. "\n")
+			count = count + 1
+		end
+	end
+
+	if count == 0 then
+		editBox:Insert("EMPTY")
+	end
+end
+
+local function DebugDumpDatabase(database)
+	--Setup Frame
+	local editFrame = CreateFrame("ScrollFrame", "DebugDBDumpFrame", UIParent, "InputScrollFrameTemplate")
+	editFrame:SetPoint("CENTER")
+	editFrame:SetSize(700, 500)
+	editFrame:Hide()
+	--So interface options and this frame will open on top of each other.
+	if (InterfaceOptionsFrame:IsShown()) then
+		editFrame:SetFrameStrata("DIALOG")
+	else
+		editFrame:SetFrameStrata("HIGH")
+	end
+
+	--Setup EditBox
+	local editBox = editFrame.EditBox
+	editBox:SetFont("Fonts\\ARIALN.ttf", 13)
+	editBox:SetWidth(editFrame:GetWidth()) 
+	editBox:SetScript("OnEscapePressed", function(self)
+		-- functions
+		editBox:SetText("")
+		editBox:ClearFocus()
+		editFrame:Hide()
+	end)
+	editFrame:Hide()
+
+	-- setup edit box closing button
+	local btnClose = CreateFrame("Button", "DebugDBDumpFrameClose", editFrame, "UIPanelButtonTemplate")
+	btnClose:SetPoint("TOPRIGHT")
+	btnClose:SetSize(25, 25)
+	btnClose:SetText("x")
+	btnClose:SetFrameStrata("FULLSCREEN")
+	btnClose:SetScript("OnClick", function(self)
+		editBox:SetText("")
+		editBox:ClearFocus()
+		editFrame:Hide()
+	end)
+
+	if(database == "killsdb") then
+		DumpKillsDB(editBox)
+	elseif database == "playersdb" then
+		DumpPlayersDB(editBox)
+	end
+
+	editFrame:Show()
+	editBox:HighlightText()
+	editBox:SetFocus()
+end
+HPH.DebugDumpDatabase = DebugDumpDatabase

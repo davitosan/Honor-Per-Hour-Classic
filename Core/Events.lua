@@ -4,9 +4,15 @@ local SM = LibStub:GetLibrary("LibSharedMedia-3.0")
 HPH.Events = CreateFrame("Frame","BCTEvents",UIParent)
 
 HPH.Events:RegisterEvent("PLAYER_LOGIN")
-HPH.Events:RegisterEvent("CHAT_MSG_COMBAT_HONOR_GAIN")
+HPH.Events:RegisterEvent("PLAYER_ENTERING_WORLD")
 HPH.Events:RegisterEvent("PLAYER_REGEN_DISABLED")
 HPH.Events:RegisterEvent("PLAYER_REGEN_ENABLED")
+HPH.Events:RegisterEvent("CHAT_MSG_COMBAT_HONOR_GAIN")
+HPH.Events:RegisterEvent("UPDATE_BATTLEFIELD_SCORE")
+
+HPH.Events:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+
+ChatFrame_AddMessageEventFilter("CHAT_MSG_COMBAT_HONOR_GAIN", HPH.myChatFilter)
 
 HPH.Events:SetScript("OnEvent", function(self, event, ...)
 	if event == "PLAYER_LOGIN" then
@@ -19,6 +25,40 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 		HPH.hk_today_nominal, _ = GetPVPSessionStats()
 		HPH.hk_today_real = HPH.GetHKsToday()
 		return
+	end
+	if event == "PLAYER_ENTERING_WORLD" then
+		HPH.hph_playersdb = {} --Reset our Player Cache
+		return
+	end
+	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+		local timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, 
+			destName, destFlags, destRaidFlags, _, spellName = CombatLogGetCurrentEventInfo();
+		if destGUID ~= nil and destGUID ~= "" and destGUID ~= " " then
+			localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(destGUID)
+
+			--Players Only
+			local faction = HPH.GetFactionByRace(englishRace)
+			if faction == "Unknown" then
+				return
+			end
+
+			--Only add players of opposing faction
+			if faction == UnitFactionGroup("player") then
+				return
+			end
+
+			--Same realm
+			if realm == "" then
+				realm = GetRealmName()
+			end
+
+			if HPH.hph_playersdb[name] == nil then
+				HPH.hph_playersdb[name] = {
+					realm,
+					englishClass
+					}
+			end
+		end
 	end
 	if event == "CHAT_MSG_COMBAT_HONOR_GAIN" then
 		local honor_msg = select(1,...)
@@ -66,37 +106,25 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 					HPH.honorSumNom = HPH.honorSumNom + honor_nominal
 					HPH.honorSumReal = HPH.honorSumReal + honor_real
 				end
-				if optChatHonor then
-					msg = "|cfffffb00+honor - " .. honor_real .. " of " .. honor_nominal .. " (|r" .. discountHex .. coef * 100 .. "%|r|cfffffb00)|r"
+				if optChatType ~= "None" then
+					msg = HPH.ColorizeOutput(honor_msg, name, timesKilled, honor_real)
 				end
 			end
 			
-			if optChatHonor then print(msg) end
+			if optChatType ~= "None" then print(msg) end
 		end
 
 		hph_week[date("%d-%m-%y",hph_today[1])] = HPH.honor_today
 		return
 	end
 
-	if event == "PLAYER_REGEN_DISABLED" then
-		if HPH.GetOption("chat_combat") then 
-			local msg = "-Combat entered"
-			print(msg) 
-			HPH.killsInFight = 0
-			HPH.honorSumNom = 0
-			HPH.honorSumReal = 0
-		end
+	if event == "PLAYER_REGEN_ENABLED" then
+		HPH.UpdateCombatSummary(event)
 		return
 	end
 	
 	if event == "PLAYER_REGEN_DISABLED" then
-		if HPH.GetOption("chat_combat") then 
-			local msg = ((HPH.killsInFight or 0) > 1 and
-				"-Combat ended: " .. HPH.honorSumReal .. " of " .. HPH.honorSumNom .. " (" ..  HPH.killsInFight .. " kills)" or
-				"-Combat ended" )
-			print(msg) 
-		end
+		HPH.UpdateCombatSummary(event)
 		return
 	end
-
 end)

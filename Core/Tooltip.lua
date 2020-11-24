@@ -37,25 +37,36 @@ GameTooltip:HookScript("OnUpdate", function(self)
 	-- Alive enemy
 	if HPH.GetOption("tooltip_enemy") then
 		if toolchanged == true and UnitIsEnemy("player","mouseover") and UnitIsPlayer("mouseover") then
-			local timesKilled = HPH.GetTimesKilled(HPH.GetName(UnitName("mouseover")))
-			local discountRate, _ = HPH.GetDiscountRate(timesKilled)
-			self:AddLine("|cffff0000" .. (1 - discountRate) * 100 .. "% - " .. timesKilled .. " kill(s)|r")
+			local unitNameFull = HPH.GetName(UnitName("mouseover"))
+
+			if(unitNameFull == nil) or (string.match(unitNameFull, "-Unknown")) then
+				return
+			end
+
+			local timesKilled = HPH.GetTimesKilled(unitNameFull)
+			local discountRate, discountHex = HPH.GetDiscountRate(timesKilled)
+			self:AddLine("|r" .. discountHex .. (1 - discountRate) * 100 .. "|r% - |r" .. discountHex .. timesKilled .. "|r kill(s)|r")
 			self:Show()
 			toolchanged = false
 			return
 		end
 	end
 
-	-- Corpse, only show if less than 100%
+	-- Corpse
 	if HPH.GetOption("tooltip_corpse") then
 		local corpseName = GetCorpseName()
 		if toolchanged == true and string.len(corpseName) > 0 then
 			local corpseNameFull = HPH.GetName(corpseName)
+
+			if(corpseNameFull == nil) or (string.match(corpseNameFull, "-Unknown")) then
+				return
+			end
+
 			local timesKilled = HPH.GetTimesKilled(corpseNameFull)
-			local discountRate, _ = HPH.GetDiscountRate(timesKilled)
 			if timesKilled > 0 then
+				local discountRate, discountHex = HPH.GetDiscountRate(timesKilled)
 				local timeSinceKill = (HPH.GetTimeSinceLastKill(corpseNameFull) == 1 and "" or HPH.GetTimeSinceLastKill(corpseNameFull))
-				self:AddLine("|cffff0000" .. (1 - discountRate) * 100 .. "% - " .. timesKilled .. " kill(s) - " .. timeSinceKill .. " ago|r")
+				self:AddLine("|r" .. discountHex .. (1 - discountRate) * 100 .. "|r% - |r" .. discountHex .. timesKilled .. "|r kill(s) - " .. timeSinceKill .. " ago|r")
 				self:Show()
 				toolchanged = false
 				return
