@@ -75,7 +75,16 @@ local function GetServerOutput(victim)
 
 	--Look at Scoreboard
 	if server == "Unknown" then
-
+		for i=1,GetNumBattlefieldScores(),1 do 
+			local name = GetBattlefieldScore(i) or ""
+			if string.find(name, "-") or 0 > 0 then -- Player from other realm
+				if string.match(name, "(.-)-%s*") == victim then
+					server = string.match(name, "-(.*)")
+				end
+			elseif name == victim then  -- Player from own realm
+				server = GetRealmName()
+			end
+		end
 	end
 
 	local serverOutput = ""
