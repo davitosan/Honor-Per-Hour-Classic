@@ -2,7 +2,6 @@ local HPH = LibStub("AceAddon-3.0"):GetAddon("HPH")
 
 -- Default options
 hph_options_defaults = {
-	["chat_honor"] = true,
 	["chat_combat"] = true,
 	["tooltip_enemy"] = true,
 	["tooltip_corpse"] = true,

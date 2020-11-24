@@ -207,3 +207,22 @@ local function UpdateCombatSummary(eventname)
 	print(msg)
 end
 HPH.UpdateCombatSummary = UpdateCombatSummary
+
+--Accepts both types of RGB.
+local function RGBToHex(r, g, b)
+	r = tonumber(r)
+	g = tonumber(g)
+	b = tonumber(b)
+
+	--Check if whole numbers.
+	if (r == math.floor(r) and g == math.floor(g) and b == math.floor(b)
+			and (r > 1 or g > 1 or b > 1)) then
+		r = r <= 255 and r >= 0 and r or 0;
+		g = g <= 255 and g >= 0 and g or 0;
+		b = b <= 255 and b >= 0 and b or 0;
+		return string.format("%02x%02x%02x", r, g, b);
+	else
+		return string.format("%02x%02x%02x", r*255, g*255, b*255);
+	end
+end
+HPH.RGBToHex = RGBToHex
