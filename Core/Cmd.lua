@@ -8,12 +8,12 @@ function SlashCmdList.HPHSC(msg)
 		for i=6,0,-1 do 
 			local txtDate = date("%d-%m-%y",time()-24*60*60*i)
 			local msg = hph_week[txtDate]
-			if msg ~= nil then print("HPH: " .. txtDate .. " - " .. msg) end
+			if msg ~= nil then HPH.Print("HPH: " .. txtDate .. " - " .. msg) end
 		end
 		return
 	end
 	if cmd == "search" then
-		print("HPH: " .. (args:gsub("^%l", string.upper)) .. " killed " .. HPH.GetTimesKilled((args:gsub("^%l", string.upper))) .. " times today.")
+		HPH.Print("HPH: " .. (args:gsub("^%l", string.upper)) .. " killed " .. HPH.GetTimesKilled((args:gsub("^%l", string.upper))) .. " times today.")
 		return
 	end
 	

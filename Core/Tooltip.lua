@@ -32,8 +32,7 @@ local function GetCorpseName()
 end
 
 local toolchanged = false
-
-GameTooltip:HookScript("OnUpdate", function(self) 
+GameTooltip:HookScript("OnUpdate", function(self)
 	-- Alive enemy
 	if HPH.GetOption("tooltip_enemy") then
 		if toolchanged == true and UnitIsEnemy("player","mouseover") and UnitIsPlayer("mouseover") then

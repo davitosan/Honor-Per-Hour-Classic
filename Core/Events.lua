@@ -38,8 +38,14 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 		RequestBattlefieldScoreData()
 	end
 	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+		--PVP only
+		if UnitIsPVP("player") == false then
+			return
+		end
+
 		local timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, 
-			destName, destFlags, destRaidFlags, _, spellName = CombatLogGetCurrentEventInfo();
+			destName, destFlags, destRaidFlags, _, spellName = CombatLogGetCurrentEventInfo()
+			
 		if destGUID ~= nil and destGUID ~= "" and destGUID ~= " " then
 			localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(destGUID)
 
@@ -118,7 +124,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 				end
 			end
 			
-			if optChatType ~= "None" then print(msg) end
+			if optChatType ~= "None" then HPH.Print(msg) end
 		end
 
 		hph_week[date("%d-%m-%y",hph_today[1])] = HPH.honor_today

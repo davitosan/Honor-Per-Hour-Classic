@@ -8,6 +8,7 @@ local printTypes =
 	"Verbose",
 	"VerboseColored",
 }
+local chatWindows = {}
 
 local function GetOptionsTable()
 	local optionsTbl = {
@@ -38,9 +39,9 @@ local function GetOptionsTable()
 								hph_options["time_reset"] = inp
 								hph_today = {}
 								HPH.SetToday()
-								print("HPH: Reset hour set to: " .. hph_options["time_reset"])
+								HPH.Print("HPH: Reset hour set to: " .. hph_options["time_reset"])
 							else
-								print("HPH: You must input a positive number less than 25")
+								HPH.Print("HPH: You must input a positive number less than 25")
 							end
 						end,
 					},	
@@ -193,7 +194,7 @@ local function GetOptionsTable()
 								hph_options["font_size"] = inp
 								HPH.UpdateFont()
 							else
-								print("HPH: You must input a positive number higher than 0")
+								HPH.Print("HPH: You must input a positive number higher than 0")
 							end
 						end,
 					},
@@ -222,8 +223,35 @@ local function GetOptionsTable()
 							hph_systemColor = "|cff" .. HPH.RGBToHex(r, g, b)
 						end,				
 					},
-					chatsystemtype = {
+					chatwindowselection = {
 						order = 2,
+						type = "select",
+						name = "Chat Window",
+						desc = "...",
+						values = function()
+							local j = 0
+							for i = 1, NUM_CHAT_WINDOWS do
+								local name, fontSize, r, g, b, alpha, shown, locked, docked, uninteractable = GetChatWindowInfo(i)
+								if name ~= nil and name ~= "" then
+									j = j + 1
+									chatWindows[j] = name
+								end
+							end
+							return chatWindows
+						end,
+						get = function()
+							for info, value in next, chatWindows do
+								if value == HPH.GetOption("chat_window") then
+									return info
+								end
+							end
+						end, 
+						set = function(_, value)
+							hph_options["chat_window"] = chatWindows[value]
+						end,
+					},
+					chatsystemtype = {
+						order = 3,
 						type = "select",
 						name = "Chat Type",
 						desc = "...",
@@ -240,7 +268,7 @@ local function GetOptionsTable()
 						end,
 					},
 					chatcombat = {
-						order = 3,
+						order = 4,
 						type = "toggle",
 						name = "Print Combat Summary",
 						desc = "...",
@@ -251,7 +279,7 @@ local function GetOptionsTable()
 						end,
 					},
 					chatsystemhonor = {
-						order = 4,
+						order = 5,
 						type = "toggle",
 						name = "Suppress System Honor Gain Message",
 						desc = "Hides system messages related to Honor Gain",

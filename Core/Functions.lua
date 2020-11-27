@@ -153,6 +153,8 @@ local function DumpPlayersDB(editBox)
 		end
 	end
 
+	editBox:Insert("Found " .. count .. " Entries")
+
 	if count == 0 then
 		editBox:Insert("EMPTY")
 	end
@@ -206,3 +208,19 @@ local function DebugDumpDatabase(database)
 	editBox:SetFocus()
 end
 HPH.DebugDumpDatabase = DebugDumpDatabase
+
+local function Print(msg)
+	local selectedWindowName = HPH.GetOption("chat_window")
+	if selectedWindowName ~= nil then
+		for i = 1, NUM_CHAT_WINDOWS do
+			local name, fontSize, r, g, b, alpha, shown, locked, docked, uninteractable = GetChatWindowInfo(i)
+			if name ~= nil and name ~= "" and name == selectedWindowName then
+				_G["ChatFrame" .. i]:AddMessage(msg)
+				return
+			end
+		end
+	end
+
+	(SELECTED_CHAT_FRAME or DEFAULT_CHAT_FRAME):AddMessage(msg)
+end
+HPH.Print = Print

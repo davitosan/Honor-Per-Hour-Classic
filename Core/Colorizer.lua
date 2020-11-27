@@ -204,7 +204,7 @@ local function UpdateCombatSummary(eventname)
 			end
 	end
 
-	print(msg)
+	HPH.Print(msg)
 end
 HPH.UpdateCombatSummary = UpdateCombatSummary
 

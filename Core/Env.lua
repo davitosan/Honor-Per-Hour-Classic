@@ -15,6 +15,7 @@ hph_options_defaults = {
 	["font_size"] = 13,
 	["chat_system_honor"] = true,
 	["chat_system_type"] = "VerboseColored",
+	["chat_window"] = "General",
 	["chat_message_color_r"] = 255,
 	["chat_message_color_g"] = 251,
 	["chat_message_color_b"] = 0,
