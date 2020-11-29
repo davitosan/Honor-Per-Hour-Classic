@@ -1,9 +1,9 @@
 ## Interface: 11305
 ## Author: Ryts, Davitosan
-## Version: 2.21
+## Version: 2.3
 ## Title: HPH
-## Notes: Honor Per Hour Tracking. v2.21
-## SavedVariablesPerCharacter: hph_killsdb, hph_today, hph_week, hph_options
+## Notes: Honor Per Hour Tracking. v2.3
+## SavedVariablesPerCharacter: hph_killsdb, hph_today, hph_week, hph_options, hph_systemColor
 
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
@@ -12,7 +12,6 @@ Libs\AceAddon-3.0\AceAddon-3.0.xml
 Libs\AceEvent-3.0\AceEvent-3.0.xml
 Libs\AceGUI-3.0\AceGUI-3.0.xml
 Libs\AceConfig-3.0\AceConfig-3.0.xml
-Libs\AceTimer-3.0\AceTimer-3.0.xml
 
 HPH.lua
 
@@ -25,3 +24,4 @@ Core/HonorFrame.lua
 Core/Events.lua
 Core/Cmd.lua
 Core/Options.lua
+Core/Colorizer.lua

@@ -2,7 +2,6 @@ local HPH = LibStub("AceAddon-3.0"):GetAddon("HPH")
 
 -- Default options
 hph_options_defaults = {
-	["chat_honor"] = true,
 	["chat_combat"] = true,
 	["tooltip_enemy"] = true,
 	["tooltip_corpse"] = true,
@@ -16,6 +15,7 @@ hph_options_defaults = {
 	["font_size"] = 13,
 	["chat_system_honor"] = true,
 	["chat_system_type"] = "VerboseColored",
+	["chat_window"] = "General",
 	["chat_message_color_r"] = 255,
 	["chat_message_color_g"] = 251,
 	["chat_message_color_b"] = 0,
@@ -26,6 +26,7 @@ if hph_killsdb == nil then hph_killsdb = {} end
 if hph_today == nil then hph_today = {} end
 if hph_week == nil then hph_week = {} end
 if hph_options == nil then hph_options = {} end
+if hph_systemColor == nil then hph_systemColor = "|cfffffb00" end
 
 -- Init Session State
 HPH.locale = GetLocale()
@@ -38,5 +39,5 @@ HPH.honor_session = 0
 HPH.honorSumNom = 0
 HPH.honorSumReal = 0
 HPH.killsInFight = 0
-HPH.systemColor = "|cfffffb00"
 HPH.optionsFrames = {}
+HPH.hph_playersdb = {}
