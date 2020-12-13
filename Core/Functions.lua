@@ -5,6 +5,8 @@ local function GetOption(option)
 end
 HPH.GetOption = GetOption
 
+--Attempts to find localized string by key. If the key is not found, returns Key.
+--Keys should be English Output as they will be the default output
 local function Localize(key)
 	return HPH.consts[key] or key
 end
