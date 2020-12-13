@@ -1,8 +1,33 @@
 ## Interface: 11306
 ## Author: Ryts, Davitosan
-## Version: 2.31
+## Version: 2.40
+
 ## Title: HPH
-## Notes: Honor Per Hour Tracking. v2.31
+## Title-deDE: EPS
+## Title-enGB: HPH
+## Title-esES: HPH
+## Title-esMX: HPH
+## Title-frFR: HPH
+## Title-itIT: OAO
+## Title-koKR: 시간당 명예
+## Title-ptBR: HPH
+## Title-ruRU: чвч
+## Title-zhCN: 每小时荣誉
+## Title-zhTW: 每小時榮譽
+
+## Notes: Tracking of honor per hour v2.40
+## Notes-deDE: Verfolgung der ehre pro stunde v2.40
+## Notes-enGB: Tracking of honour per hour v2.40
+## Notes-esES: Seguimiento de honor por hora v2.40
+## Notes-esMX: Seguimiento de honor por hora v2.40
+## Notes-frFR: Suivi d'honneur par heure v2.40
+## Notes-itIT: Monitoraggio dell'onore all'ora v2.40
+## Notes-koKR: 시간당 명예 추적 v2.40
+## Notes-ptBR: Rastreamento de honra por hora v2.40
+## Notes-ruRU: Отслеживание чести в час v2.40
+## Notes-zhCN: 每小时追踪荣誉 v2.40
+## Notes-zhTW: 每小時追踪榮譽 v2.40
+
 ## SavedVariablesPerCharacter: hph_killsdb, hph_today, hph_week, hph_options, hph_systemColor
 
 Libs\LibStub\LibStub.lua
@@ -15,9 +40,23 @@ Libs\AceConfig-3.0\AceConfig-3.0.xml
 
 HPH.lua
 
-Core/Functions.lua
-Core/Queries.lua
 Core/Env.lua
+Core/Functions.lua
+
+Locales/constants.br.lua
+Locales/constants.cn.lua
+Locales/constants.de.lua
+Locales/constants.es.lua
+Locales/constants.fr.lua
+Locales/constants.gb.lua
+Locales/constants.it.lua
+Locales/constants.kr.lua
+Locales/constants.mx.lua
+Locales/constants.ru.lua
+Locales/constants.tw.lua
+Locales/constants.us.lua
+
+Core/Queries.lua
 Core/Frame.lua
 Core/Tooltip.lua
 Core/HonorFrame.lua

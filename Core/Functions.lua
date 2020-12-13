@@ -5,6 +5,11 @@ local function GetOption(option)
 end
 HPH.GetOption = GetOption
 
+local function Localize(key)
+	return HPH.consts[key] or key
+end
+HPH.Localize = Localize
+
 -- this is called after eventg	ww
 local function myChatFilter(_s, e, msg, ...)
 	if HPH.GetOption("chat_system_honor") then
@@ -47,13 +52,20 @@ HPH.IsTimestampToday = IsTimestampToday
 
 -- Parse Honor Message for nominal honor
 local function GetHonor(inp)
-    return tonumber(string.match(inp, "%d+"))
+	return tonumber(string.match(inp:reverse(), "%d+"):reverse()) --Because of Korean, we have to parse in reverse then re-reverse the result
 end
 HPH.GetHonor = GetHonor
 
 -- Parse Honor Message for name and return it with server suffix
-local function GetName(inp)
-	local msgName = string.match(inp or "", "^([^%s]+)")
+local function GetName(inp, loc)
+	local msgName = nil
+	if loc == "zhCN" or loc == "zhTW" then
+		msgName = string.match(inp or "", "(.-)死") --死
+	elseif loc == "koKR" then
+		msgName = string.match(inp or "", "(.-)|") --|
+	else
+		msgName = string.match(inp or "", "^([^%s]+)")
+	end
 	
 	-- In World
 	if GetNumBattlefieldScores() == 0 then 

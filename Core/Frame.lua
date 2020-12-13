@@ -49,19 +49,19 @@ HPH.Window:SetScript("OnUpdate", function(self)
     local TimeElapsed = TimeHours .. "h" .. TimeTotal - TimeHours * 60 .. "m"
 	
 	local txtWeekly = HPH.GetOption("error") and 
-		"Honor: " .. HPH.addComas(tostring(floor(HPH.honor_today+HPH.honor_week))) .. " ± (e < " .. HPH.hk_today_real  .. ")" or
-		"Honor: " .. HPH.addComas(tostring(floor(HPH.honor_today+HPH.honor_week)))
+		HPH.Localize("Honor") .. ": " .. HPH.addComas(tostring(floor(HPH.honor_today+HPH.honor_week))) .. " ± (e < " .. HPH.hk_today_real  .. ")" or
+		HPH.Localize("Honor") .. ": " .. HPH.addComas(tostring(floor(HPH.honor_today+HPH.honor_week)))
 	local txtHonorToday = HPH.addComas(tostring(floor(HPH.honor_today)))
 	local txtPastHour = floor(HPH.GetHonorLastHour()/100)/10 .. "k"
 	local txtSession = floor(HPH.honor_session/100)/10 .. "k"
 	local txtHonorPerHourSession = floor(math.floor(3600 * HPH.honor_session / Time)/100)/10 .. "k"
 
-    local txt = (txtWeekly ..
-		"\nHonor Today: " .. txtHonorToday ..
-		"\nHonor Past Hour: " .. txtPastHour ..
-		"\nHonor Session: " .. txtSession ..
-		"\nHonor/h: " .. txtHonorPerHourSession ..
-		"\nSession: " .. TimeElapsed
+    local txt = (txtWeekly .. "\n" ..
+    	HPH.Localize("Honor Today")     .. ": " .. txtHonorToday .. "\n" ..
+    	HPH.Localize("Honor Past Hour") .. ": " .. txtPastHour .. "\n" ..
+		HPH.Localize("Honor Session")   .. ": " .. txtSession .. "\n" ..
+		HPH.Localize("Honor/h")         .. ": " .. txtHonorPerHourSession .. "\n" ..
+		HPH.Localize("Session")         .. ": " .. TimeElapsed
 		)
 
 	self.text:SetText(txt)

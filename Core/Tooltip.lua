@@ -12,7 +12,7 @@ local function GetCorpseName()
 			return (Text ~= nil and string.match(Text, "^Leichnam von ([^%s%p%d%c]+)$") or "")
 		elseif HPH.locale == "frFR" then
 			return (Text ~= nil and string.match(Text, frFR(Text)) or "")
-		elseif HPH.locale == "esES" then
+		elseif HPH.locale == "esES" or HPH.locale == "esMX" then
 			return (Text ~= nil and string.match(Text, "^Cadáver de ([^%s%p%d%c]+)$") or "")
 		elseif HPH.locale == "zhTW" then
 			return (Text ~= nil and string.match(Text, "^([^%s%p%d%c]+)的屍體$") or "")
