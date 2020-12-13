@@ -30,6 +30,7 @@ if hph_systemColor == nil then hph_systemColor = "|cfffffb00" end
 
 -- Init Session State
 HPH.locale = GetLocale()
+HPH.consts = {}
 HPH.timeAtLogin = GetTime()
 HPH.honor_today = 0
 HPH.honor_week = 0

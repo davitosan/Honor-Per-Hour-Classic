@@ -93,36 +93,36 @@ end
 
 local function GetRankOutput(rank)
 	local opt = HPH.GetOption("chat_system_type")
-	local rankLabel = "Rank:"
+	local rankLabel = HPH.Localize("Rank") .. ":"
 	local rankIndex = 0
 
-	if "Scout" == rank or "Private" == rank then
+	if PVP_RANK_5_0 == rank or PVP_RANK_5_1== rank then
 		rankIndex = 1
-	elseif "Grunt" == rank or "Corporal" == rank then
+	elseif PVP_RANK_6_0 == rank or PVP_RANK_6_1 == rank then
 		rankIndex = 2
-	elseif "Sergeant" == rank or "Sergeant" == rank then
+	elseif PVP_RANK_7_0 == rank or PVP_RANK_7_1 == rank then
 		rankIndex = 3
-	elseif "Senior Sergeant" == rank or "Master Sergeant" == rank then
+	elseif PVP_RANK_8_0 == rank or PVP_RANK_8_1 == rank then
 		rankIndex = 4
-	elseif "First Sergeant" == rank or "Sergeant Major" == rank then
+	elseif PVP_RANK_9_0 == rank or PVP_RANK_9_1 == rank then
 		rankIndex = 5
-	elseif "Stone Guard" == rank or "Knight" == rank then
+	elseif PVP_RANK_10_0 == rank or PVP_RANK_10_1 == rank then
 		rankIndex = 6
-	elseif "Blood Guard" == rank or "Knight-Lieutenant" == rank then
+	elseif PVP_RANK_11_0 == rank or PVP_RANK_11_1 == rank then
 		rankIndex = 7
-	elseif "Legionnaire" == rank or "Knight-Captain" == rank then
+	elseif PVP_RANK_12_0 == rank or PVP_RANK_12_1 == rank then
 		rankIndex = 8
-	elseif "Centurion" == rank or "Knight-Champion" == rank then
+	elseif PVP_RANK_13_0 == rank or PVP_RANK_13_1 == rank then
 		rankIndex = 9
-	elseif "Champion" == rank or "Lieutenant Commander" == rank then
+	elseif PVP_RANK_14_0 == rank or PVP_RANK_14_1 == rank then
 		rankIndex = 10
-	elseif "Lieutenant General" == rank or "Commander" == rank then
+	elseif PVP_RANK_15_0 == rank or PVP_RANK_15_1 == rank then
 		rankIndex = 11
-	elseif "General" == rank or "Marshal" == rank then
+	elseif PVP_RANK_16_0 == rank or PVP_RANK_16_1 == rank then
 		rankIndex = 12
-	elseif "Warlord" == rank or "Field Marshal" == rank then
+	elseif PVP_RANK_17_0 == rank or PVP_RANK_17_1 == rank then
 		rankIndex = 13
-	elseif "High Warlord" == rank or "Grand Marshal" == rank then
+	elseif PVP_RANK_18_0 == rank or PVP_RANK_18_1 == rank then
 		rankIndex = 14
 	else
 		rank = "Unknown"

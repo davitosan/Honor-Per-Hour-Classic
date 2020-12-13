@@ -169,6 +169,7 @@ local function GetOptionsTable()
 						name = "Font",
 						desc = "...",
 						values = fonts,
+						disabled  = HPH.locale == "zhCN" or HPH.locale == "zhTW" or HPH.locale == "koKR", --No Font support for glyph languages
 						get = function()
 							for info, value in next, fonts do
 								if value == HPH.GetOption("font") then
