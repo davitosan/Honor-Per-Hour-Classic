@@ -44,7 +44,7 @@ GameTooltip:HookScript("OnUpdate", function(self)
 
 			local timesKilled = HPH.GetTimesKilled(unitNameFull)
 			local discountRate, discountHex = HPH.GetDiscountRate(timesKilled)
-			self:AddLine("|r" .. discountHex .. (1 - discountRate) * 100 .. "|r% - |r" .. discountHex .. timesKilled .. "|r kill(s)|r")
+			self:AddLine("|r" .. discountHex .. (1 - discountRate) * 100 .. "|r% - |r" .. discountHex .. timesKilled .. "|r " .. HPH.consts["Kills"] .. "|r")
 			self:Show()
 			toolchanged = false
 			return
@@ -65,7 +65,7 @@ GameTooltip:HookScript("OnUpdate", function(self)
 			if timesKilled > 0 then
 				local discountRate, discountHex = HPH.GetDiscountRate(timesKilled)
 				local timeSinceKill = (HPH.GetTimeSinceLastKill(corpseNameFull) == 1 and "" or HPH.GetTimeSinceLastKill(corpseNameFull))
-				self:AddLine("|r" .. discountHex .. (1 - discountRate) * 100 .. "|r% - |r" .. discountHex .. timesKilled .. "|r kill(s) - " .. timeSinceKill .. " ago|r")
+				self:AddLine("|r" .. discountHex .. (1 - discountRate) * 100 .. "|r% - |r" .. discountHex .. timesKilled .. "|r " .. HPH.consts["Kills"] .. " - " .. timeSinceKill .. " " .. HPH.consts["ago"] .. "|r")
 				self:Show()
 				toolchanged = false
 				return

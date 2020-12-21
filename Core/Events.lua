@@ -79,7 +79,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 			local honor_nominal = HPH.GetHonor(honor_msg)
 			--print("honor_nominal: " .. honor_nominal)
 			
-			local optChatType = HPH.GetOption("chat_system_type")
+			local optChatType = HPH.GetChatType("chat_type_index")
 			local msg = ""
 			
 			HPH.hk_today_nominal, _ = GetPVPSessionStats()
@@ -99,7 +99,7 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 				HPH.honor_today = HPH.honor_today + honor_nominal
 				HPH.honor_session = HPH.honor_session + honor_nominal
 				if optChatType ~= "None" then
-					msg = hph_systemColor .. "+honor - " .. honor_nominal .. "(|cff0099ffBG" .. hph_systemColor .. ")"
+					msg = hph_systemColor .. "+" .. HPH.consts["Honor"] .. " - " .. honor_nominal .. "(|cff0099ff" .. HPH.consts["BG"] .. hph_systemColor .. ")"
 				end
 			else
 				local name = HPH.GetName(honor_msg, HPH.locale)

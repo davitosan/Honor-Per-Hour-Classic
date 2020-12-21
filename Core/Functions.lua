@@ -5,6 +5,22 @@ local function GetOption(option)
 end
 HPH.GetOption = GetOption
 
+--Get's the chat type by index
+local function GetChatType(option)
+	local chatTypeIndex = HPH.GetOption(option)
+
+	if chatTypeIndex == 2 then
+		return "Compact"
+	elseif chatTypeIndex == 3 then
+		return "Verbose"
+	elseif chatTypeIndex == 4 then
+		return "VerboseColored"
+	else
+		return "None"
+	end
+end
+HPH.GetChatType = GetChatType
+
 --Attempts to find localized string by key. If the key is not found, returns Key.
 --Keys should be English Output as they will be the default output
 local function Localize(key)
@@ -162,16 +178,12 @@ local function DumpPlayersDB(editBox)
 	local count = 0
 	if HPH.hph_playersdb ~= nil then
 		for k, v in pairs(HPH.hph_playersdb) do
-			editBox:Insert("Name: " .. k .. " Server: " .. v[1] .. " Class: " .. v[2] .. "\n")
+			editBox:Insert(HPH.consts["Name"] .. ": " .. k .. " " .. HPH.consts["Server"] .. ": " .. v[1] .. " " .. HPH.consts["Class"] .. ": " .. v[2] .. "\n")
 			count = count + 1
 		end
 	end
 
-	editBox:Insert("Found " .. count .. " Entries")
-
-	if count == 0 then
-		editBox:Insert("EMPTY")
-	end
+	editBox:Insert(count)
 end
 
 local function DebugDumpDatabase(database)
@@ -238,3 +250,6 @@ local function Print(msg)
 	(SELECTED_CHAT_FRAME or DEFAULT_CHAT_FRAME):AddMessage(msg)
 end
 HPH.Print = Print
+
+
+--1014853495

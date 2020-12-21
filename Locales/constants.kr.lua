@@ -2,8 +2,11 @@
 
 if HPH.locale ~= "koKR" then return end
 
---Frame
+--Shared
+HPH.consts["HPH"] = "시간당 명예"
 HPH.consts["Honor"] = "명예"
+
+--Frame
 HPH.consts["Honor Today"] = "오늘 영광"
 HPH.consts["Honor Past Hour"] = "지난 시간 명예"
 HPH.consts["Honor Session"] = "명예 세션"
