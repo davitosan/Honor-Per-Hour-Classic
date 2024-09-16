@@ -14,7 +14,7 @@ hph_options_defaults = {
 	["font"] = "Expressway",
 	["font_size"] = 13,
 	["chat_system_honor"] = true,
-	["chat_system_type"] = "VerboseColored",
+	["chat_type_index"] = 4,
 	["chat_window"] = "General",
 	["chat_message_color_r"] = 255,
 	["chat_message_color_g"] = 251,
@@ -30,6 +30,7 @@ if hph_systemColor == nil then hph_systemColor = "|cfffffb00" end
 
 -- Init Session State
 HPH.locale = GetLocale()
+HPH.consts = {}
 HPH.timeAtLogin = GetTime()
 HPH.honor_today = 0
 HPH.honor_week = 0

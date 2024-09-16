@@ -21,7 +21,7 @@ local rankColors =
 } 
 
 local function GetVictimOutput(victim)
-	local optChatType = HPH.GetOption("chat_system_type")
+	local optChatType = HPH.GetChatType("chat_type_index")
 	if optChatType ~= "VerboseColored" then
 		return hph_systemColor .. victim
 	end
@@ -62,14 +62,14 @@ local function GetVictimOutput(victim)
 end
 
 local function GetServerOutput(victim)
-	local server = "Unknown"
+	local server = HPH.Localize("Unknown")
 	--Look at Combat Log Cache first
 	if HPH.hph_playersdb[victim] ~= nil then
 		server = HPH.hph_playersdb[victim][1]
 	end
 
 	--Look at Scoreboard
-	if server == "Unknown" then
+	if server == HPH.Localize("Unknown") then
 		for i=1,GetNumBattlefieldScores(),1 do 
 			local name = GetBattlefieldScore(i) or ""
 			if string.find(name, "-") or 0 > 0 then -- Player from other realm
@@ -83,7 +83,7 @@ local function GetServerOutput(victim)
 	end
 
 	local serverOutput = ""
-	local optChatType = HPH.GetOption("chat_system_type")
+	local optChatType = HPH.GetChatType("chat_type_index")
 	if optChatType == "VerboseColored" or optChatType == "Verbose" then
 		serverOutput = hph_systemColor .. "-" .. server .. hph_systemColor .. " | "
 	end
@@ -92,40 +92,40 @@ local function GetServerOutput(victim)
 end
 
 local function GetRankOutput(rank)
-	local opt = HPH.GetOption("chat_system_type")
-	local rankLabel = "Rank:"
+	local opt = HPH.GetChatType("chat_type_index")
+	local rankLabel = HPH.Localize("Rank") .. ":"
 	local rankIndex = 0
 
-	if "Scout" == rank or "Private" == rank then
+	if PVP_RANK_5_0 == rank or PVP_RANK_5_1 == rank then
 		rankIndex = 1
-	elseif "Grunt" == rank or "Corporal" == rank then
+	elseif PVP_RANK_6_0 == rank or PVP_RANK_6_1 == rank then
 		rankIndex = 2
-	elseif "Sergeant" == rank or "Sergeant" == rank then
+	elseif PVP_RANK_7_0 == rank or PVP_RANK_7_1 == rank then
 		rankIndex = 3
-	elseif "Senior Sergeant" == rank or "Master Sergeant" == rank then
+	elseif PVP_RANK_8_0 == rank or PVP_RANK_8_1 == rank then
 		rankIndex = 4
-	elseif "First Sergeant" == rank or "Sergeant Major" == rank then
+	elseif PVP_RANK_9_0 == rank or PVP_RANK_9_1 == rank then
 		rankIndex = 5
-	elseif "Stone Guard" == rank or "Knight" == rank then
+	elseif PVP_RANK_10_0 == rank or PVP_RANK_10_1 == rank then
 		rankIndex = 6
-	elseif "Blood Guard" == rank or "Knight-Lieutenant" == rank then
+	elseif PVP_RANK_11_0 == rank or PVP_RANK_11_1 == rank then
 		rankIndex = 7
-	elseif "Legionnaire" == rank or "Knight-Captain" == rank then
+	elseif PVP_RANK_12_0 == rank or PVP_RANK_12_1 == rank then
 		rankIndex = 8
-	elseif "Centurion" == rank or "Knight-Champion" == rank then
+	elseif PVP_RANK_13_0 == rank or PVP_RANK_13_1 == rank then
 		rankIndex = 9
-	elseif "Champion" == rank or "Lieutenant Commander" == rank then
+	elseif PVP_RANK_14_0 == rank or PVP_RANK_14_1 == rank then
 		rankIndex = 10
-	elseif "Lieutenant General" == rank or "Commander" == rank then
+	elseif PVP_RANK_15_0 == rank or PVP_RANK_15_1 == rank then
 		rankIndex = 11
-	elseif "General" == rank or "Marshal" == rank then
+	elseif PVP_RANK_16_0 == rank or PVP_RANK_16_1 == rank then
 		rankIndex = 12
-	elseif "Warlord" == rank or "Field Marshal" == rank then
+	elseif PVP_RANK_17_0 == rank or PVP_RANK_17_1 == rank then
 		rankIndex = 13
-	elseif "High Warlord" == rank or "Grand Marshal" == rank then
+	elseif PVP_RANK_18_0 == rank or PVP_RANK_18_1 == rank then
 		rankIndex = 14
 	else
-		rank = "Unknown"
+		rank = HPH.Localize("Unknown")
 		rankIndex = 0
 	end
 
@@ -157,13 +157,13 @@ local function ColorizeOutput(honor_msg, nameandserver, timesKilled, honor_real)
 	local discount, discountHex = HPH.GetDiscountRate(timesKilled)
 	local coef = 1 - discount
 
-	local optChatType = HPH.GetOption("chat_system_type")
+	local optChatType = HPH.GetChatType("chat_type_index")
 	if optChatType == "VerboseColored" then
-		msg = victimOutput .. serverOutput .. rankOutput .. hph_systemColor .. " | Kills: |r" .. discountHex .. timesKilled + 1 .. hph_systemColor .. " | " .. hph_systemColor .. "Honor: " .. discountHex .. math.floor(honor_real) .. hph_systemColor .. " (" .. discountHex .. coef * 100 .. "%" .. hph_systemColor .. ")|r"
+		msg = victimOutput .. serverOutput .. rankOutput .. hph_systemColor .. " | " .. HPH.Localize("Kills") .. ": |r" .. discountHex .. timesKilled + 1 .. hph_systemColor .. " | " .. hph_systemColor .. HPH.Localize("Honor") .. ": " .. discountHex .. math.floor(honor_real) .. hph_systemColor .. " (" .. discountHex .. coef * 100 .. "%" .. hph_systemColor .. ")|r"
 	elseif optChatType == "Verbose" then
-		msg = hph_systemColor .. victimOutput .. serverOutput .. rankOutput .. " | Kills: " .. timesKilled + 1 .. " | Honor: " .. math.floor(honor_real) .. " (" .. coef * 100 .. "%)"
+		msg = hph_systemColor .. victimOutput .. serverOutput .. rankOutput .. " | " .. HPH.Localize("Kills") .. ": " .. timesKilled + 1 .. " | " .. HPH.Localize("Honor") .. ": " .. math.floor(honor_real) .. " (" .. coef * 100 .. "%)"
 	elseif optChatType == "Compact" then
-		msg = hph_systemColor .. "+honor - " .. math.floor(honor_real) .. " of " .. est_honor .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. hph_systemColor .. ")|r"
+		msg = hph_systemColor .. "+" .. HPH.Localize("Honor") .. " - " .. math.floor(honor_real) .. " " .. HPH.Localize("of") .. " " .. est_honor .. " (|r" .. discountHex .. coef * 100 .. "%|r" .. hph_systemColor .. ")|r"
 	end
 
 	return msg
@@ -178,17 +178,17 @@ local function UpdateCombatSummary(eventname)
 	local msg = ""
 
 	if eventname == "PLAYER_REGEN_DISABLED" then
-		msg = "-Combat entered"
+		msg = "-" .. HPH.Localize("Combat entered")
 		HPH.killsInFight = 0
 		HPH.honorSumNom = 0
 		HPH.honorSumReal = 0
 	elseif eventname == "PLAYER_REGEN_ENABLED" then
-		local optChatType = HPH.GetOption("chat_system_type")
+		local optChatType = HPH.GetChatType("chat_type_index")
 			--Compact
 			if optChatType == "Compact" or optChatType == "None" then
-				msg = ("-Combat ended: " .. math.floor(HPH.honorSumReal) .. " of " .. HPH.honorSumNom .. " (" ..  HPH.killsInFight .. " kills)")
+				msg = ("-" .. HPH.Localize("Combat ended") .. ": " .. math.floor(HPH.honorSumReal) .. " " .. HPH.consts["of"] .. " " .. HPH.honorSumNom .. " (" ..  HPH.killsInFight .. " " .. HPH.consts["Kills"] .. ")")
 			else
-				msg = "-Combat ended"
+				msg = "-" .. HPH.Localize("Combat ended")
 				local pct = 0
 				local discount = 0
 				local discountHex = "|r"
@@ -200,7 +200,7 @@ local function UpdateCombatSummary(eventname)
 					end
 				end
 
-				msg = "-Combat ended: Kills: " .. HPH.killsInFight .. " | Honor: |r" .. discountHex .. math.floor(HPH.honorSumReal) .. "|r of |r" .. discountHex .. HPH.honorSumNom .. "|r | (" .. discountHex .. pct .. "%|r)"
+				msg = "-" .. HPH.Localize("Combat ended") .. ": " .. HPH.Localize("Kills") .. ": " .. HPH.killsInFight .. " | " .. HPH.Localize("Honor") .. ": |r" .. discountHex .. math.floor(HPH.honorSumReal) .. "|r " .. HPH.Localize("of") .. " |r" .. discountHex .. HPH.honorSumNom .. "|r | (" .. discountHex .. pct .. "%|r)"
 			end
 	end
 

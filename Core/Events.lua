@@ -75,24 +75,21 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 	end
 	if event == "CHAT_MSG_COMBAT_HONOR_GAIN" then
 		local honor_msg = select(1,...)
-		if honor_msg ~= nil then
-			local name = HPH.GetName(honor_msg)
+		if honor_msg ~= nil then			
 			local honor_nominal = HPH.GetHonor(honor_msg)
-			local timesKilled = HPH.GetTimesKilled(name)
-			local discount, discountHex = HPH.GetDiscountRate(timesKilled)
-			local coef = 1 - discount
-			local honor_real = honor_nominal * coef
-			local optChatType = HPH.GetOption("chat_system_type")
-			local msg = ""
+			--print("honor_nominal: " .. honor_nominal)
 			
-			--print(discount)
-			--print(coef)
-			--print(honor_nominal)
-			--print(honor_real)
+			local optChatType = HPH.GetChatType("chat_type_index")
+			local msg = ""
 			
 			HPH.hk_today_nominal, _ = GetPVPSessionStats()
 
-			if string.match(honor_msg, "%(") == nil then -- BG
+			local bgSearchKey= "%("
+			if HPH.locale == "zhCN" or HPH.locale == "zhTW" then
+				bgSearchKey= "（" --Traditional and Simplifed Chinese use a different character for '('
+			end
+
+			if string.match(honor_msg, bgSearchKey) == nil then -- BG
 				hph_killsdb[getn(hph_killsdb) + 1] = {
 					"HPHBGHONORAWARDED",
 					honor_nominal, 
@@ -102,9 +99,20 @@ HPH.Events:SetScript("OnEvent", function(self, event, ...)
 				HPH.honor_today = HPH.honor_today + honor_nominal
 				HPH.honor_session = HPH.honor_session + honor_nominal
 				if optChatType ~= "None" then
-					msg = hph_systemColor .. "+honor - " .. honor_nominal .. "(|cff0099ffBG" .. hph_systemColor .. ")"
+					msg = hph_systemColor .. "+" .. HPH.consts["Honor"] .. " - " .. honor_nominal .. "(|cff0099ff" .. HPH.consts["BG"] .. hph_systemColor .. ")"
 				end
 			else
+				local name = HPH.GetName(honor_msg, HPH.locale)
+				--print("name: " .. name)
+				local timesKilled = HPH.GetTimesKilled(name)
+				--print("timesKilled: " .. timesKilled)
+				local discount, discountHex = HPH.GetDiscountRate(timesKilled)
+				--print("discount: " .. discount)
+				local coef = 1 - discount
+				--print("coef: " .. coef)
+				local honor_real = honor_nominal * coef
+				--print("honor_real: " .. honor_real)
+
 				hph_killsdb[getn(hph_killsdb) + 1] = {
 					name,
 					honor_real, 

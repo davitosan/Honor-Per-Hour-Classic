@@ -5,6 +5,29 @@ local function GetOption(option)
 end
 HPH.GetOption = GetOption
 
+--Get's the chat type by index
+local function GetChatType(option)
+	local chatTypeIndex = HPH.GetOption(option)
+
+	if chatTypeIndex == 2 then
+		return "Compact"
+	elseif chatTypeIndex == 3 then
+		return "Verbose"
+	elseif chatTypeIndex == 4 then
+		return "VerboseColored"
+	else
+		return "None"
+	end
+end
+HPH.GetChatType = GetChatType
+
+--Attempts to find localized string by key. If the key is not found, returns Key.
+--Keys should be English Output as they will be the default output
+local function Localize(key)
+	return HPH.consts[key] or key
+end
+HPH.Localize = Localize
+
 -- this is called after eventg	ww
 local function myChatFilter(_s, e, msg, ...)
 	if HPH.GetOption("chat_system_honor") then
@@ -47,13 +70,20 @@ HPH.IsTimestampToday = IsTimestampToday
 
 -- Parse Honor Message for nominal honor
 local function GetHonor(inp)
-    return tonumber(string.match(inp, "%d+"))
+	return tonumber(string.match(inp:reverse(), "%d+"):reverse()) --Because of Korean, we have to parse in reverse then re-reverse the result
 end
 HPH.GetHonor = GetHonor
 
 -- Parse Honor Message for name and return it with server suffix
-local function GetName(inp)
-	local msgName = string.match(inp or "", "^([^%s]+)")
+local function GetName(inp, loc)
+	local msgName = nil
+	if loc == "zhCN" or loc == "zhTW" then
+		msgName = string.match(inp or "", "(.-)死") --死
+	elseif loc == "koKR" then
+		msgName = string.match(inp or "", "(.-)|") --|
+	else
+		msgName = string.match(inp or "", "^([^%s]+)")
+	end
 	
 	-- In World
 	if GetNumBattlefieldScores() == 0 then 
@@ -148,16 +178,12 @@ local function DumpPlayersDB(editBox)
 	local count = 0
 	if HPH.hph_playersdb ~= nil then
 		for k, v in pairs(HPH.hph_playersdb) do
-			editBox:Insert("Name: " .. k .. " Server: " .. v[1] .. " Class: " .. v[2] .. "\n")
+			editBox:Insert(HPH.consts["Name"] .. ": " .. k .. " " .. HPH.consts["Server"] .. ": " .. v[1] .. " " .. HPH.consts["Class"] .. ": " .. v[2] .. "\n")
 			count = count + 1
 		end
 	end
 
-	editBox:Insert("Found " .. count .. " Entries")
-
-	if count == 0 then
-		editBox:Insert("EMPTY")
-	end
+	editBox:Insert(count)
 end
 
 local function DebugDumpDatabase(database)
@@ -224,3 +250,6 @@ local function Print(msg)
 	(SELECTED_CHAT_FRAME or DEFAULT_CHAT_FRAME):AddMessage(msg)
 end
 HPH.Print = Print
+
+
+--1014853495

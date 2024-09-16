@@ -12,7 +12,7 @@ local function GetCorpseName()
 			return (Text ~= nil and string.match(Text, "^Leichnam von ([^%s%p%d%c]+)$") or "")
 		elseif HPH.locale == "frFR" then
 			return (Text ~= nil and string.match(Text, frFR(Text)) or "")
-		elseif HPH.locale == "esES" then
+		elseif HPH.locale == "esES" or HPH.locale == "esMX" then
 			return (Text ~= nil and string.match(Text, "^Cadáver de ([^%s%p%d%c]+)$") or "")
 		elseif HPH.locale == "zhTW" then
 			return (Text ~= nil and string.match(Text, "^([^%s%p%d%c]+)的屍體$") or "")
@@ -44,7 +44,7 @@ GameTooltip:HookScript("OnUpdate", function(self)
 
 			local timesKilled = HPH.GetTimesKilled(unitNameFull)
 			local discountRate, discountHex = HPH.GetDiscountRate(timesKilled)
-			self:AddLine("|r" .. discountHex .. (1 - discountRate) * 100 .. "|r% - |r" .. discountHex .. timesKilled .. "|r kill(s)|r")
+			self:AddLine("|r" .. discountHex .. (1 - discountRate) * 100 .. "|r% - |r" .. discountHex .. timesKilled .. "|r " .. HPH.consts["Kills"] .. "|r")
 			self:Show()
 			toolchanged = false
 			return
@@ -65,7 +65,7 @@ GameTooltip:HookScript("OnUpdate", function(self)
 			if timesKilled > 0 then
 				local discountRate, discountHex = HPH.GetDiscountRate(timesKilled)
 				local timeSinceKill = (HPH.GetTimeSinceLastKill(corpseNameFull) == 1 and "" or HPH.GetTimeSinceLastKill(corpseNameFull))
-				self:AddLine("|r" .. discountHex .. (1 - discountRate) * 100 .. "|r% - |r" .. discountHex .. timesKilled .. "|r kill(s) - " .. timeSinceKill .. " ago|r")
+				self:AddLine("|r" .. discountHex .. (1 - discountRate) * 100 .. "|r% - |r" .. discountHex .. timesKilled .. "|r " .. HPH.consts["Kills"] .. " - " .. timeSinceKill .. " " .. HPH.consts["ago"] .. "|r")
 				self:Show()
 				toolchanged = false
 				return

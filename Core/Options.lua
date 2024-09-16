@@ -1,19 +1,13 @@
 local HPH = LibStub("AceAddon-3.0"):GetAddon("HPH")
 local SM = LibStub:GetLibrary("LibSharedMedia-3.0")
 local fonts = SM:List("font")
-local printTypes = 
-{
-	"None",
-	"Compact",
-	"Verbose",
-	"VerboseColored",
-}
+
 local chatWindows = {}
 
 local function GetOptionsTable()
 	local optionsTbl = {
 		type = "group",
-		name = "HPH",
+		name = HPH.Localize("HPH"),
 		args = {
 			General = {
 				name = "General",
@@ -169,6 +163,7 @@ local function GetOptionsTable()
 						name = "Font",
 						desc = "...",
 						values = fonts,
+						disabled  = HPH.locale == "zhCN" or HPH.locale == "zhTW" or HPH.locale == "koKR", --No Font support for glyph languages
 						get = function()
 							for info, value in next, fonts do
 								if value == HPH.GetOption("font") then
@@ -255,16 +250,19 @@ local function GetOptionsTable()
 						type = "select",
 						name = "Chat Type",
 						desc = "...",
-						values = printTypes,
+						values = function()
+							localizedChatTypes = {}
+							localizedChatTypes[1] = HPH.Localize("None")
+							localizedChatTypes[2] = HPH.Localize("Compact")
+							localizedChatTypes[3] = HPH.Localize("Verbose")
+							localizedChatTypes[4] = HPH.Localize("VerboseColored")
+							return localizedChatTypes
+						end,
 						get = function()
-							for info, value in next, printTypes do
-								if value == HPH.GetOption("chat_system_type") then
-									return info
-								end
-							end
+							return hph_options["chat_type_index"] or hph_options_defaults["chat_type_index"]
 						end, 
 						set = function(_, value)
-							hph_options["chat_system_type"] = printTypes[value]
+							hph_options["chat_type_index"] = value
 						end,
 					},
 					chatcombat = {
@@ -357,9 +355,9 @@ local function GetOptionsTable()
 	return optionsTbl
 end
 
-LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("HPH", GetOptionsTable)
-HPH.optionsFrames.HPH = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("HPH", "HPH", nil, "General")
-HPH.optionsFrames.Window = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("HPH", "Window", "HPH", "Window")
-HPH.optionsFrames.Chat = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("HPH", "Chat", "HPH", "Chat")
-HPH.optionsFrames.Honortab = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("HPH", "Honortab", "HPH", "Honortab")
-HPH.optionsFrames.Tooltip = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("HPH", "Tooltip", "HPH", "Tooltip")
+LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(HPH.Localize("HPH"), GetOptionsTable)
+HPH.optionsFrames.HPH      = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(HPH.Localize("HPH"), HPH.Localize("HPH"),      nil,                 HPH.Localize("General"))
+HPH.optionsFrames.Window   = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(HPH.Localize("HPH"), HPH.Localize("Window"),   HPH.Localize("HPH"), HPH.Localize("Window"))
+HPH.optionsFrames.Chat     = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(HPH.Localize("HPH"), HPH.Localize("Chat"),     HPH.Localize("HPH"), HPH.Localize("Chat"))
+HPH.optionsFrames.Honortab = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(HPH.Localize("HPH"), HPH.Localize("Honortab"), HPH.Localize("HPH"), HPH.Localize("Honortab"))
+HPH.optionsFrames.Tooltip  = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(HPH.Localize("HPH"), HPH.Localize("Tooltip"),  HPH.Localize("HPH"), HPH.Localize("Tooltip"))
