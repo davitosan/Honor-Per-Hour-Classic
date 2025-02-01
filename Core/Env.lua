@@ -7,7 +7,6 @@ hph_options_defaults = {
 	["tooltip_corpse"] = true,
 	["honortab"] = true,
 	["time_reset"] = 8,
-	["error"] = false,
 	["honorspy"] = false,
 	["moveable"] = false,
 	["show"] = true,

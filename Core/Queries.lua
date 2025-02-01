@@ -3,7 +3,7 @@ local HPH = LibStub("AceAddon-3.0"):GetAddon("HPH")
 -- Returns honor for current honor day
 local function GetHonorDay()
 	local honor_today = 0
-	
+
 	HPH.SetToday()
 
 	if hph_killsdb ~= nil then
