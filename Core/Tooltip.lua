@@ -4,7 +4,7 @@ local function GetCorpseName()
 	local function frFR(Text)
 		return Text:match("^Cadavre de ([^%s%p%d%c]+)$") or Text:match("^Cadavre d'([^%s%p%d%c]+)$") or ""
 	end
-	if not UnitExists("mouseover") and GetMouseFocus() == WorldFrame and GameTooltip:IsVisible() and GameTooltip:NumLines() <= 2 then
+	if not UnitExists("mouseover") and GetMouseFoci()[1] == WorldFrame and GameTooltip:IsVisible() and GameTooltip:NumLines() <= 2 then
 		local Text = GameTooltipTextLeft1:GetText();
 		if HPH.locale == "ruRU" then
 			return (Text ~= nil and string.match(Text, "^Труп ([^%s%p%d%c]+)$") or "")

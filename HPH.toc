@@ -1,8 +1,8 @@
-## Interface: 11305
+## Interface: 11505, 11506
 ## Author: Ryts, Davitosan
-## Version: 2.3
+## Version: 2.33
 ## Title: HPH
-## Notes: Honor Per Hour Tracking. v2.3
+## Notes: Honor Per Hour Tracking. v2.33
 ## SavedVariablesPerCharacter: hph_killsdb, hph_today, hph_week, hph_options, hph_systemColor
 
 Libs\LibStub\LibStub.lua

@@ -48,10 +48,10 @@ HPH.Window:SetScript("OnUpdate", function(self)
     local TimeHours = math.floor(TimeTotal / 60)
     local TimeElapsed = TimeHours .. "h" .. TimeTotal - TimeHours * 60 .. "m"
 	
-	local txtWeekly = HPH.GetOption("error") and 
-		"Honor: " .. HPH.addComas(tostring(floor(HPH.honor_today+HPH.honor_week))) .. " ± (e < " .. HPH.hk_today_real  .. ")" or
-		"Honor: " .. HPH.addComas(tostring(floor(HPH.honor_today+HPH.honor_week)))
-	local txtHonorToday = HPH.addComas(tostring(floor(HPH.honor_today)))
+	local _, hp_week = GetPVPThisWeekStats()
+
+	local txtWeekly = "Honor: " .. HPH.addComas(tostring(floor(hp_week)))
+	local txtHonorToday = HPH.addComas(tostring(floor(HPH.honor_today + HPH.hk_today_real)))
 	local txtPastHour = floor(HPH.GetHonorLastHour()/100)/10 .. "k"
 	local txtSession = floor(HPH.honor_session/100)/10 .. "k"
 	local txtHonorPerHourSession = floor(math.floor(3600 * HPH.honor_session / Time)/100)/10 .. "k"

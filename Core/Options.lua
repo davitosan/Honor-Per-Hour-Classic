@@ -152,17 +152,6 @@ local function GetOptionsTable()
 							C_UI.Reload()
 						end
 					},
-					error_display = {
-						order = 4,
-						type = "toggle",
-						name = "Show Error",
-						desc = "...",
-						width = "full",
-						get = function(info) return HPH.GetOption("error") end,
-						set = function(info, value) 
-							hph_options["error"] = not HPH.GetOption("error")
-						end,
-					},
 					font = {
 						type = "select",
 						order = 5,
