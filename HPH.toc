@@ -1,6 +1,6 @@
 ## Interface: 11505, 11506
 ## Author: Ryts, Davitosan
-## Version: 2.33
+## Version: 2.34
 ## Title: HPH
 ## Notes: Honor Per Hour Tracking. v2.33
 ## SavedVariablesPerCharacter: hph_killsdb, hph_today, hph_week, hph_options, hph_systemColor
